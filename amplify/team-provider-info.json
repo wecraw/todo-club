@@ -1,19 +1,19 @@
 {
-  "staging": {
+  "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-amplifya67827d5a7c54-staging-222748-authRole",
-      "UnauthRoleArn": "arn:aws:iam::625304719596:role/amplify-amplifya67827d5a7c54-staging-222748-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::625304719596:role/amplify-amplifya67827d5a7c54-staging-222748-authRole",
-      "Region": "us-west-2",
-      "DeploymentBucketName": "amplify-amplifya67827d5a7c54-staging-222748-deployment",
-      "UnauthRoleName": "amplify-amplifya67827d5a7c54-staging-222748-unauthRole",
-      "StackName": "amplify-amplifya67827d5a7c54-staging-222748",
-      "StackId": "arn:aws:cloudformation:us-west-2:625304719596:stack/amplify-amplifya67827d5a7c54-staging-222748/a9014c10-98e5-11ec-875c-0617998c5f4b",
-      "AmplifyAppId": "d2sfn6dr8icxmp"
+      "AuthRoleName": "amplify-todoclub-dev-153950-authRole",
+      "UnauthRoleArn": "arn:aws:iam::625304719596:role/amplify-todoclub-dev-153950-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::625304719596:role/amplify-todoclub-dev-153950-authRole",
+      "Region": "us-west-1",
+      "DeploymentBucketName": "amplify-todoclub-dev-153950-deployment",
+      "UnauthRoleName": "amplify-todoclub-dev-153950-unauthRole",
+      "StackName": "amplify-todoclub-dev-153950",
+      "StackId": "arn:aws:cloudformation:us-west-1:625304719596:stack/amplify-todoclub-dev-153950/ba5ebf60-98ef-11ec-bb54-06b5bf716415",
+      "AmplifyAppId": "d2gm17wll16yrd"
     },
     "categories": {
       "auth": {
-        "todoclub58092720": {}
+        "todoclubecd4d9f5": {}
       }
     }
   }
