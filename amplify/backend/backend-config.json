@@ -1,6 +1,6 @@
 {
   "auth": {
-    "todoclub8d63aa95": {
+    "todoclub58092720": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
