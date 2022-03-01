@@ -1,0 +1,14 @@
+{
+  "resourceName": "todoclub",
+  "policyUUID": "1b397332",
+  "bucketName": "todoclubbucket",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}
