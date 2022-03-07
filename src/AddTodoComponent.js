@@ -1,72 +1,118 @@
 import React, { useState, useEffect } from 'react';
-import { listTodos } from './graphql/queries';
-import { createTodo as createTodoMutation, deleteTodo as deleteTodoMutation } from './graphql/mutations';
+import { createTodoList as createTodoListMutation } from './graphql/mutations';
 import { API, Storage } from 'aws-amplify';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Auth from '@aws-amplify/auth';
 
-const initialFormState = { name: '', description: '' }
+const initialFormState = { title: '' }
 
 
 function AddTodo(props) {
-        const [todos, setTodos] = useState([]);
+
+        const [show, setShow] = useState(false);
+        const [disabled, setDisabled] = useState(true);
+        const handleClose = () => setShow(false);
+
+        const handleCreateNewList = () => {
+          createTodoList();
+          setShow(false);
+        }
+
+        const handleShowNewListModal = () => setShow(true);
         const [formData, setFormData] = useState(initialFormState);
         
-        useEffect(() => {
-          fetchTodos();
-        }, []);
+        // useEffect(() => {
+        //   fetchTodos();
+        // }, []);
         
-        async function fetchTodos() {
-          const apiData = await API.graphql({ query: listTodos });
-          const todosFromAPI = apiData.data.listTodos.items;
-          await Promise.all(todosFromAPI.map(async todo => {
-            if (todo.image) {
-              const image = await Storage.get(todo.image);
-              todo.image = image;
-            }
-            return todo;
-          }))
-          setTodos(apiData.data.listTodos.items);
-        }
+        // async function fetchTodos() {
+        //   const apiData = await API.graphql({ query: listTodos });
+        //   const todosFromAPI = apiData.data.listTodos.items;
+        //   await Promise.all(todosFromAPI.map(async todo => {
+        //     if (todo.image) {
+        //       const image = await Storage.get(todo.image);
+        //       todo.image = image;
+        //     }
+        //     return todo;
+        //   }))
+        //   setTodos(apiData.data.listTodos.items);
+        // }
         
         async function onChange(e) {
           if (!e.target.files[0]) return
           const file = e.target.files[0];
           setFormData({ ...formData, image: file.name });
           await Storage.put(file.name, file);
-          fetchTodos();
+          // fetchTodos();
+        }
+
+        function updateForm(value){
+          setButtonDisabled(value);
+          setFormData({ ...formData, 'title': value});
+        }
+
+        function setButtonDisabled(e){
+          if (e === ""){
+            setDisabled(true);
+          } else {
+            setDisabled(false);
+          }
         }
         
-        async function createTodo() {
-          if (!formData.name || !formData.description) return;
-          await API.graphql({ query: createTodoMutation, variables: { input: formData } });
-          if (formData.image) {
-            const image = await Storage.get(formData.image);
-            formData.image = image;
-          }
-          setTodos([ ...todos, formData ]);
+        async function createTodoList() {
+          if (!formData.title) return;
+          const owner = await Auth.currentAuthenticatedUser().then((user) => {
+            let owner = user.attributes.email;
+            return owner
+          })
+
+          let newListData = {
+            title: formData.title,
+            owner: owner
+          }          
+
+          await API.graphql({ query: createTodoListMutation, variables: { input: newListData } });
           setFormData(initialFormState);
         }
         
-        async function deleteTodo({ id }) {
-          const newTodosArray = todos.filter(todo => todo.id !== id);
-          setTodos(newTodosArray);
-          await API.graphql({ query: deleteTodoMutation, variables: { input: { id } }});
-        }
+        // async function deleteTodo({ id }) {
+        //   const newTodosArray = todos.filter(todo => todo.id !== id);
+        //   setTodos(newTodosArray);
+        //   await API.graphql({ query: deleteTodoMutation, variables: { input: { id } }});
+        // }
     
         return (
             <div>
+              {/* <input
+                onChange={e => setFormData({ ...formData, 'title': e.target.value})}
+                placeholder="Todo list name"
+                value={formData.title}
+              /> */}
+            <Button onClick={handleShowNewListModal}>Create new todo club</Button>
 
-                <input
-                onChange={e => setFormData({ ...formData, 'name': e.target.value})}
-                placeholder="Todo name"
-                value={formData.name}
-            />
-            <input
-                onChange={e => setFormData({ ...formData, 'description': e.target.value})}
-                placeholder="Todo description"
-                value={formData.description}
-            />
-            <button onClick={createTodo}>Create Todo</button>
-            <div style={{marginBottom: 30}}>
+            <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Create a new Todo Club</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form>
+                <Form.Group className="mb-3" controlId="formNewListName">
+                  <Form.Label>Give your club a name</Form.Label>
+                  <Form.Control onChange={e => updateForm(e.target.value)} name="newListName" type="text" placeholder="Enter name" />
+                </Form.Group>   
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="primary" onClick={handleCreateNewList} disabled={disabled}>
+                Create
+              </Button>
+            </Modal.Footer>
+          </Modal>
+
+
+            {/* <div style={{marginBottom: 30}}>
                 {
                 todos.map(todo => (
                     <div key={todo.id || todo.name}>
@@ -79,7 +125,7 @@ function AddTodo(props) {
                     </div>
                 ))
                 }
-            </div> 
+            </div>  */}
           </div>
 
         )

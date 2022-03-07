@@ -16,11 +16,5 @@ export type AmplifyDependentResourcesAttributes = {
             "GraphQLAPIIdOutput": "string",
             "GraphQLAPIEndpointOutput": "string"
         }
-    },
-    "storage": {
-        "todoclub": {
-            "BucketName": "string",
-            "Region": "string"
-        }
     }
 }

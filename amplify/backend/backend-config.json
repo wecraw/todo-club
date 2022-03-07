@@ -34,19 +34,24 @@
           "defaultAuthentication": {
             "authenticationType": "API_KEY",
             "apiKeyConfig": {
-              "apiKeyExpirationDays": 7
+              "apiKeyExpirationDays": 365,
+              "apiKeyExpirationDate": "2023-03-06T21:21:17.130Z",
+              "description": "todo-api-key"
             }
           },
-          "additionalAuthenticationProviders": []
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            },
+            {
+              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+              "userPoolConfig": {
+                "userPoolId": "authtodoclubecd4d9f5"
+              }
+            }
+          ]
         }
       }
-    }
-  },
-  "storage": {
-    "todoclub": {
-      "service": "S3",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": []
     }
   }
 }
