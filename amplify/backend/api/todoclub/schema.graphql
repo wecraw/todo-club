@@ -1,45 +1,24 @@
-type Category @model
-  @auth(rules: [
-    { allow: owner }, 
-    { allow: owner, ownerField: "sharedWith", operations: [update, read] }
-  ]) {
-
+type Category @model @auth(rules: [{allow: owner}, {allow: groups, groups: ["Admin"]}]) @aws_cognito_user_pools {
   id: ID!
-  title: String
-  owner: AWSEmail!
-  sharedWith: [AWSEmail]
+  name: String!
   todolistID: ID! @index(name: "byTodoList")
   Todos: [Todo] @hasMany(indexName: "byCategory", fields: ["id"])
 }
 
-type Todo @model
-  @auth(rules: [
-    { allow: owner }, 
-    { allow: owner, ownerField: "sharedWith", operations: [update, read] }
-  ]) {
-
+type Todo @model @auth(rules: [{allow: owner}, {allow: groups, groups: ["Admin"]}]) @aws_cognito_user_pools {
   id: ID!
   description: String!
   category: String
   completed: Boolean
-  owner: AWSEmail!
-  completedBy: AWSEmail!
-  sharedWith: [AWSEmail]
   picture: String
   todolistID: ID! @index(name: "byTodoList")
   categoryID: ID! @index(name: "byCategory")
 }
 
-type TodoList @model 
-  @auth(rules: [
-    { allow: owner }, 
-    { allow: owner, ownerField: "sharedWith", operations: [update, read] }
-  ]) {
-  
+type TodoList @model @auth(rules: [{allow: owner}, {allow: groups, groups: ["Admin"]}]) @aws_cognito_user_pools {
   id: ID!
-  owner: AWSEmail!
-  title: String!
-  sharedWith: [AWSEmail]
+  name: String!
   Todos: [Todo] @hasMany(indexName: "byTodoList", fields: ["id"])
   Categories: [Category] @hasMany(indexName: "byTodoList", fields: ["id"])
 }
+ 

@@ -5,9 +5,7 @@ export const getCategory = /* GraphQL */ `
   query GetCategory($id: ID!) {
     getCategory(id: $id) {
       id
-      title
-      owner
-      sharedWith
+      name
       todolistID
       Todos {
         items {
@@ -15,9 +13,6 @@ export const getCategory = /* GraphQL */ `
           description
           category
           completed
-          owner
-          completedBy
-          sharedWith
           picture
           todolistID
           categoryID
@@ -26,6 +21,7 @@ export const getCategory = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -35,6 +31,7 @@ export const getCategory = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -47,9 +44,7 @@ export const listCategories = /* GraphQL */ `
     listCategories(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        title
-        owner
-        sharedWith
+        name
         todolistID
         Todos {
           nextToken
@@ -60,6 +55,7 @@ export const listCategories = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       nextToken
       startedAt
@@ -81,9 +77,7 @@ export const syncCategories = /* GraphQL */ `
     ) {
       items {
         id
-        title
-        owner
-        sharedWith
+        name
         todolistID
         Todos {
           nextToken
@@ -94,6 +88,7 @@ export const syncCategories = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       nextToken
       startedAt
@@ -107,9 +102,6 @@ export const getTodo = /* GraphQL */ `
       description
       category
       completed
-      owner
-      completedBy
-      sharedWith
       picture
       todolistID
       categoryID
@@ -118,6 +110,7 @@ export const getTodo = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -133,9 +126,6 @@ export const listTodos = /* GraphQL */ `
         description
         category
         completed
-        owner
-        completedBy
-        sharedWith
         picture
         todolistID
         categoryID
@@ -144,6 +134,7 @@ export const listTodos = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       nextToken
       startedAt
@@ -168,9 +159,6 @@ export const syncTodos = /* GraphQL */ `
         description
         category
         completed
-        owner
-        completedBy
-        sharedWith
         picture
         todolistID
         categoryID
@@ -179,6 +167,7 @@ export const syncTodos = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       nextToken
       startedAt
@@ -189,18 +178,13 @@ export const getTodoList = /* GraphQL */ `
   query GetTodoList($id: ID!) {
     getTodoList(id: $id) {
       id
-      owner
-      title
-      sharedWith
+      name
       Todos {
         items {
           id
           description
           category
           completed
-          owner
-          completedBy
-          sharedWith
           picture
           todolistID
           categoryID
@@ -209,6 +193,7 @@ export const getTodoList = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -216,15 +201,14 @@ export const getTodoList = /* GraphQL */ `
       Categories {
         items {
           id
-          title
-          owner
-          sharedWith
+          name
           todolistID
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -234,6 +218,7 @@ export const getTodoList = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -246,9 +231,7 @@ export const listTodoLists = /* GraphQL */ `
     listTodoLists(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        owner
-        title
-        sharedWith
+        name
         Todos {
           nextToken
           startedAt
@@ -262,6 +245,7 @@ export const listTodoLists = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       nextToken
       startedAt
@@ -283,9 +267,7 @@ export const syncTodoLists = /* GraphQL */ `
     ) {
       items {
         id
-        owner
-        title
-        sharedWith
+        name
         Todos {
           nextToken
           startedAt
@@ -299,6 +281,7 @@ export const syncTodoLists = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       nextToken
       startedAt

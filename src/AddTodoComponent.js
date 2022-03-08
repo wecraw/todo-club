@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Auth from '@aws-amplify/auth';
 
-const initialFormState = { title: '' }
+const initialFormState = { name: '' }
 
 
 function AddTodo(props) {
@@ -50,7 +50,7 @@ function AddTodo(props) {
 
         function updateForm(value){
           setButtonDisabled(value);
-          setFormData({ ...formData, 'title': value});
+          setFormData({ ...formData, 'name': value});
         }
 
         function setButtonDisabled(e){
@@ -62,18 +62,20 @@ function AddTodo(props) {
         }
         
         async function createTodoList() {
-          if (!formData.title) return;
+          if (!formData.name) return;
           const owner = await Auth.currentAuthenticatedUser().then((user) => {
-            let owner = user.attributes.email;
+            let owner = user.attributes.name;
+            console.log(owner)
             return owner
           })
 
           let newListData = {
-            title: formData.title,
-            owner: owner
+            name: formData.name,
+            // owner: owner,
+            // sharedWith: [owner]
           }          
 
-          await API.graphql({ query: createTodoListMutation, variables: { input: newListData } });
+          await API.graphql({ query: createTodoListMutation, variables: { input: newListData }, authMode: 'AMAZON_COGNITO_USER_POOLS' });
           setFormData(initialFormState);
         }
         
@@ -86,9 +88,9 @@ function AddTodo(props) {
         return (
             <div>
               {/* <input
-                onChange={e => setFormData({ ...formData, 'title': e.target.value})}
+                onChange={e => setFormData({ ...formData, 'name': e.target.value})}
                 placeholder="Todo list name"
-                value={formData.title}
+                value={formData.name}
               /> */}
             <Button onClick={handleShowNewListModal}>Create new todo club</Button>
 

@@ -18,9 +18,7 @@ type TodoListMetaData = {
 
 export declare class Category {
   readonly id: string;
-  readonly title?: string;
-  readonly owner: string;
-  readonly sharedWith?: (string | null)[];
+  readonly name: string;
   readonly todolistID: string;
   readonly Todos?: (Todo | null)[];
   readonly createdAt?: string;
@@ -34,9 +32,6 @@ export declare class Todo {
   readonly description: string;
   readonly category?: string;
   readonly completed?: boolean;
-  readonly owner: string;
-  readonly completedBy: string;
-  readonly sharedWith?: (string | null)[];
   readonly picture?: string;
   readonly todolistID: string;
   readonly categoryID: string;
@@ -48,9 +43,7 @@ export declare class Todo {
 
 export declare class TodoList {
   readonly id: string;
-  readonly owner: string;
-  readonly title: string;
-  readonly sharedWith?: (string | null)[];
+  readonly name: string;
   readonly Todos?: (Todo | null)[];
   readonly Categories?: (Category | null)[];
   readonly createdAt?: string;

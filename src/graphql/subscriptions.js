@@ -5,9 +5,7 @@ export const onCreateCategory = /* GraphQL */ `
   subscription OnCreateCategory($owner: String) {
     onCreateCategory(owner: $owner) {
       id
-      title
-      owner
-      sharedWith
+      name
       todolistID
       Todos {
         items {
@@ -15,9 +13,6 @@ export const onCreateCategory = /* GraphQL */ `
           description
           category
           completed
-          owner
-          completedBy
-          sharedWith
           picture
           todolistID
           categoryID
@@ -26,6 +21,7 @@ export const onCreateCategory = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -35,6 +31,7 @@ export const onCreateCategory = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -42,9 +39,7 @@ export const onUpdateCategory = /* GraphQL */ `
   subscription OnUpdateCategory($owner: String) {
     onUpdateCategory(owner: $owner) {
       id
-      title
-      owner
-      sharedWith
+      name
       todolistID
       Todos {
         items {
@@ -52,9 +47,6 @@ export const onUpdateCategory = /* GraphQL */ `
           description
           category
           completed
-          owner
-          completedBy
-          sharedWith
           picture
           todolistID
           categoryID
@@ -63,6 +55,7 @@ export const onUpdateCategory = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -72,6 +65,7 @@ export const onUpdateCategory = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -79,9 +73,7 @@ export const onDeleteCategory = /* GraphQL */ `
   subscription OnDeleteCategory($owner: String) {
     onDeleteCategory(owner: $owner) {
       id
-      title
-      owner
-      sharedWith
+      name
       todolistID
       Todos {
         items {
@@ -89,9 +81,6 @@ export const onDeleteCategory = /* GraphQL */ `
           description
           category
           completed
-          owner
-          completedBy
-          sharedWith
           picture
           todolistID
           categoryID
@@ -100,6 +89,7 @@ export const onDeleteCategory = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -109,6 +99,7 @@ export const onDeleteCategory = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -119,9 +110,6 @@ export const onCreateTodo = /* GraphQL */ `
       description
       category
       completed
-      owner
-      completedBy
-      sharedWith
       picture
       todolistID
       categoryID
@@ -130,6 +118,7 @@ export const onCreateTodo = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -140,9 +129,6 @@ export const onUpdateTodo = /* GraphQL */ `
       description
       category
       completed
-      owner
-      completedBy
-      sharedWith
       picture
       todolistID
       categoryID
@@ -151,6 +137,7 @@ export const onUpdateTodo = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -161,9 +148,6 @@ export const onDeleteTodo = /* GraphQL */ `
       description
       category
       completed
-      owner
-      completedBy
-      sharedWith
       picture
       todolistID
       categoryID
@@ -172,6 +156,7 @@ export const onDeleteTodo = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -179,18 +164,13 @@ export const onCreateTodoList = /* GraphQL */ `
   subscription OnCreateTodoList($owner: String) {
     onCreateTodoList(owner: $owner) {
       id
-      owner
-      title
-      sharedWith
+      name
       Todos {
         items {
           id
           description
           category
           completed
-          owner
-          completedBy
-          sharedWith
           picture
           todolistID
           categoryID
@@ -199,6 +179,7 @@ export const onCreateTodoList = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -206,15 +187,14 @@ export const onCreateTodoList = /* GraphQL */ `
       Categories {
         items {
           id
-          title
-          owner
-          sharedWith
+          name
           todolistID
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -224,6 +204,7 @@ export const onCreateTodoList = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -231,18 +212,13 @@ export const onUpdateTodoList = /* GraphQL */ `
   subscription OnUpdateTodoList($owner: String) {
     onUpdateTodoList(owner: $owner) {
       id
-      owner
-      title
-      sharedWith
+      name
       Todos {
         items {
           id
           description
           category
           completed
-          owner
-          completedBy
-          sharedWith
           picture
           todolistID
           categoryID
@@ -251,6 +227,7 @@ export const onUpdateTodoList = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -258,15 +235,14 @@ export const onUpdateTodoList = /* GraphQL */ `
       Categories {
         items {
           id
-          title
-          owner
-          sharedWith
+          name
           todolistID
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -276,6 +252,7 @@ export const onUpdateTodoList = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -283,18 +260,13 @@ export const onDeleteTodoList = /* GraphQL */ `
   subscription OnDeleteTodoList($owner: String) {
     onDeleteTodoList(owner: $owner) {
       id
-      owner
-      title
-      sharedWith
+      name
       Todos {
         items {
           id
           description
           category
           completed
-          owner
-          completedBy
-          sharedWith
           picture
           todolistID
           categoryID
@@ -303,6 +275,7 @@ export const onDeleteTodoList = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -310,15 +283,14 @@ export const onDeleteTodoList = /* GraphQL */ `
       Categories {
         items {
           id
-          title
-          owner
-          sharedWith
+          name
           todolistID
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          owner
         }
         nextToken
         startedAt
@@ -328,6 +300,7 @@ export const onDeleteTodoList = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;

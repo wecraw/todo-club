@@ -10,27 +10,12 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "title": {
-                    "name": "title",
+                "name": {
+                    "name": "name",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "owner": {
-                    "name": "owner",
-                    "isArray": false,
-                    "type": "AWSEmail",
                     "isRequired": true,
                     "attributes": []
-                },
-                "sharedWith": {
-                    "name": "sharedWith",
-                    "isArray": true,
-                    "type": "AWSEmail",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
                 },
                 "todolistID": {
                     "name": "todolistID",
@@ -78,6 +63,10 @@ export const schema = {
                     "properties": {}
                 },
                 {
+                    "type": "aws_cognito_user_pools",
+                    "properties": {}
+                },
+                {
                     "type": "key",
                     "properties": {
                         "name": "byTodoList",
@@ -103,14 +92,18 @@ export const schema = {
                                 ]
                             },
                             {
+                                "groupClaim": "cognito:groups",
                                 "provider": "userPools",
-                                "ownerField": "sharedWith",
-                                "allow": "owner",
-                                "operations": [
-                                    "update",
-                                    "read"
+                                "allow": "groups",
+                                "groups": [
+                                    "Admin"
                                 ],
-                                "identityClaim": "cognito:username"
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
                             }
                         ]
                     }
@@ -147,28 +140,6 @@ export const schema = {
                     "type": "Boolean",
                     "isRequired": false,
                     "attributes": []
-                },
-                "owner": {
-                    "name": "owner",
-                    "isArray": false,
-                    "type": "AWSEmail",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "completedBy": {
-                    "name": "completedBy",
-                    "isArray": false,
-                    "type": "AWSEmail",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "sharedWith": {
-                    "name": "sharedWith",
-                    "isArray": true,
-                    "type": "AWSEmail",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
                 },
                 "picture": {
                     "name": "picture",
@@ -216,6 +187,10 @@ export const schema = {
                     "properties": {}
                 },
                 {
+                    "type": "aws_cognito_user_pools",
+                    "properties": {}
+                },
+                {
                     "type": "key",
                     "properties": {
                         "name": "byTodoList",
@@ -250,14 +225,18 @@ export const schema = {
                                 ]
                             },
                             {
+                                "groupClaim": "cognito:groups",
                                 "provider": "userPools",
-                                "ownerField": "sharedWith",
-                                "allow": "owner",
-                                "operations": [
-                                    "update",
-                                    "read"
+                                "allow": "groups",
+                                "groups": [
+                                    "Admin"
                                 ],
-                                "identityClaim": "cognito:username"
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
                             }
                         ]
                     }
@@ -274,27 +253,12 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "owner": {
-                    "name": "owner",
-                    "isArray": false,
-                    "type": "AWSEmail",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "title": {
-                    "name": "title",
+                "name": {
+                    "name": "name",
                     "isArray": false,
                     "type": "String",
                     "isRequired": true,
                     "attributes": []
-                },
-                "sharedWith": {
-                    "name": "sharedWith",
-                    "isArray": true,
-                    "type": "AWSEmail",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
                 },
                 "Todos": {
                     "name": "Todos",
@@ -349,6 +313,10 @@ export const schema = {
                     "properties": {}
                 },
                 {
+                    "type": "aws_cognito_user_pools",
+                    "properties": {}
+                },
+                {
                     "type": "auth",
                     "properties": {
                         "rules": [
@@ -365,14 +333,18 @@ export const schema = {
                                 ]
                             },
                             {
+                                "groupClaim": "cognito:groups",
                                 "provider": "userPools",
-                                "ownerField": "sharedWith",
-                                "allow": "owner",
-                                "operations": [
-                                    "update",
-                                    "read"
+                                "allow": "groups",
+                                "groups": [
+                                    "Admin"
                                 ],
-                                "identityClaim": "cognito:username"
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
                             }
                         ]
                     }
@@ -382,5 +354,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "108fd2c20b61e2e10027db03e3157e23"
+    "version": "8cff1ef0df0b1fb3492d30b26155e4c1"
 };
