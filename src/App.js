@@ -7,6 +7,7 @@ import './App.css';
 import AddTodo from './AddTodoComponent';
 import Button from 'react-bootstrap/Button';
 import { listTodoLists } from './graphql/queries';
+import { deleteTodoList as deleteTodoListMutation } from './graphql/mutations';
 
 Amplify.configure(awsExports);
 
@@ -46,7 +47,7 @@ export default function App() {
 
   async function deleteTodoList({ id }) {
     const newTodoListsArray = todoLists.filter(todoList => todoList.id !== id);
-    setTodos(newTodoListsArray);
+    setTodoLists(newTodoListsArray);
     await API.graphql({ query: deleteTodoListMutation, variables: { input: { id } }});
   }
 
