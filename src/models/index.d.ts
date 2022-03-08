@@ -4,6 +4,10 @@ import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplif
 
 
 
+type UserDataMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
 type CategoryMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
@@ -14,6 +18,17 @@ type TodoMetaData = {
 
 type TodoListMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
+export declare class UserData {
+  readonly id: string;
+  readonly username?: string;
+  readonly email?: string;
+  readonly profilePicture?: string;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<UserData, UserDataMetaData>);
+  static copyOf(source: UserData, mutator: (draft: MutableModel<UserData, UserDataMetaData>) => MutableModel<UserData, UserDataMetaData> | void): UserData;
 }
 
 export declare class Category {
@@ -33,7 +48,6 @@ export declare class Todo {
   readonly category?: string;
   readonly completed?: boolean;
   readonly picture?: string;
-  readonly todolistID: string;
   readonly categoryID: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
@@ -44,7 +58,6 @@ export declare class Todo {
 export declare class TodoList {
   readonly id: string;
   readonly name: string;
-  readonly Todos?: (Todo | null)[];
   readonly Categories?: (Category | null)[];
   readonly createdAt?: string;
   readonly updatedAt?: string;

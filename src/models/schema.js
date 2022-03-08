@@ -1,5 +1,81 @@
 export const schema = {
     "models": {
+        "UserData": {
+            "name": "UserData",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "username": {
+                    "name": "username",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "email": {
+                    "name": "email",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "profilePicture": {
+                    "name": "profilePicture",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "UserData",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "provider": "userPools",
+                                "ownerField": "owner",
+                                "allow": "owner",
+                                "identityClaim": "cognito:username",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "Category": {
             "name": "Category",
             "fields": {
@@ -148,13 +224,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "todolistID": {
-                    "name": "todolistID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "categoryID": {
                     "name": "categoryID",
                     "isArray": false,
@@ -189,15 +258,6 @@ export const schema = {
                 {
                     "type": "aws_cognito_user_pools",
                     "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byTodoList",
-                        "fields": [
-                            "todolistID"
-                        ]
-                    }
                 },
                 {
                     "type": "key",
@@ -259,20 +319,6 @@ export const schema = {
                     "type": "String",
                     "isRequired": true,
                     "attributes": []
-                },
-                "Todos": {
-                    "name": "Todos",
-                    "isArray": true,
-                    "type": {
-                        "model": "Todo"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "todolistID"
-                    }
                 },
                 "Categories": {
                     "name": "Categories",
@@ -354,5 +400,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "8cff1ef0df0b1fb3492d30b26155e4c1"
+    "version": "2ebb3413cbfbad06403a022ef4669da0"
 };

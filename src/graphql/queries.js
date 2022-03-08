@@ -1,6 +1,76 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getUserData = /* GraphQL */ `
+  query GetUserData($id: ID!) {
+    getUserData(id: $id) {
+      id
+      username
+      email
+      profilePicture
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const listUserData = /* GraphQL */ `
+  query ListUserData(
+    $filter: ModelUserDataFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserData(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        username
+        email
+        profilePicture
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncUserData = /* GraphQL */ `
+  query SyncUserData(
+    $filter: ModelUserDataFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncUserData(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        username
+        email
+        profilePicture
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
 export const getCategory = /* GraphQL */ `
   query GetCategory($id: ID!) {
     getCategory(id: $id) {
@@ -14,7 +84,6 @@ export const getCategory = /* GraphQL */ `
           category
           completed
           picture
-          todolistID
           categoryID
           createdAt
           updatedAt
@@ -103,7 +172,6 @@ export const getTodo = /* GraphQL */ `
       category
       completed
       picture
-      todolistID
       categoryID
       createdAt
       updatedAt
@@ -127,7 +195,6 @@ export const listTodos = /* GraphQL */ `
         category
         completed
         picture
-        todolistID
         categoryID
         createdAt
         updatedAt
@@ -160,7 +227,6 @@ export const syncTodos = /* GraphQL */ `
         category
         completed
         picture
-        todolistID
         categoryID
         createdAt
         updatedAt
@@ -179,25 +245,6 @@ export const getTodoList = /* GraphQL */ `
     getTodoList(id: $id) {
       id
       name
-      Todos {
-        items {
-          id
-          description
-          category
-          completed
-          picture
-          todolistID
-          categoryID
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        nextToken
-        startedAt
-      }
       Categories {
         items {
           id
@@ -232,10 +279,6 @@ export const listTodoLists = /* GraphQL */ `
       items {
         id
         name
-        Todos {
-          nextToken
-          startedAt
-        }
         Categories {
           nextToken
           startedAt
@@ -268,10 +311,6 @@ export const syncTodoLists = /* GraphQL */ `
       items {
         id
         name
-        Todos {
-          nextToken
-          startedAt
-        }
         Categories {
           nextToken
           startedAt

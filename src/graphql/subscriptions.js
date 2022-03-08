@@ -1,6 +1,54 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateUserData = /* GraphQL */ `
+  subscription OnCreateUserData($owner: String) {
+    onCreateUserData(owner: $owner) {
+      id
+      username
+      email
+      profilePicture
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const onUpdateUserData = /* GraphQL */ `
+  subscription OnUpdateUserData($owner: String) {
+    onUpdateUserData(owner: $owner) {
+      id
+      username
+      email
+      profilePicture
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const onDeleteUserData = /* GraphQL */ `
+  subscription OnDeleteUserData($owner: String) {
+    onDeleteUserData(owner: $owner) {
+      id
+      username
+      email
+      profilePicture
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
 export const onCreateCategory = /* GraphQL */ `
   subscription OnCreateCategory($owner: String) {
     onCreateCategory(owner: $owner) {
@@ -14,7 +62,6 @@ export const onCreateCategory = /* GraphQL */ `
           category
           completed
           picture
-          todolistID
           categoryID
           createdAt
           updatedAt
@@ -48,7 +95,6 @@ export const onUpdateCategory = /* GraphQL */ `
           category
           completed
           picture
-          todolistID
           categoryID
           createdAt
           updatedAt
@@ -82,7 +128,6 @@ export const onDeleteCategory = /* GraphQL */ `
           category
           completed
           picture
-          todolistID
           categoryID
           createdAt
           updatedAt
@@ -111,7 +156,6 @@ export const onCreateTodo = /* GraphQL */ `
       category
       completed
       picture
-      todolistID
       categoryID
       createdAt
       updatedAt
@@ -130,7 +174,6 @@ export const onUpdateTodo = /* GraphQL */ `
       category
       completed
       picture
-      todolistID
       categoryID
       createdAt
       updatedAt
@@ -149,7 +192,6 @@ export const onDeleteTodo = /* GraphQL */ `
       category
       completed
       picture
-      todolistID
       categoryID
       createdAt
       updatedAt
@@ -165,25 +207,6 @@ export const onCreateTodoList = /* GraphQL */ `
     onCreateTodoList(owner: $owner) {
       id
       name
-      Todos {
-        items {
-          id
-          description
-          category
-          completed
-          picture
-          todolistID
-          categoryID
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        nextToken
-        startedAt
-      }
       Categories {
         items {
           id
@@ -213,25 +236,6 @@ export const onUpdateTodoList = /* GraphQL */ `
     onUpdateTodoList(owner: $owner) {
       id
       name
-      Todos {
-        items {
-          id
-          description
-          category
-          completed
-          picture
-          todolistID
-          categoryID
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        nextToken
-        startedAt
-      }
       Categories {
         items {
           id
@@ -261,25 +265,6 @@ export const onDeleteTodoList = /* GraphQL */ `
     onDeleteTodoList(owner: $owner) {
       id
       name
-      Todos {
-        items {
-          id
-          description
-          category
-          completed
-          picture
-          todolistID
-          categoryID
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        nextToken
-        startedAt
-      }
       Categories {
         items {
           id

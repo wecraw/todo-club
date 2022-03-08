@@ -3,7 +3,7 @@
   "serviceConfiguration": {
     "apiName": "todoclub",
     "serviceName": "AppSync",
-    "gqlSchemaPath": "/tmp/amplify-9954dfea-64a1-4b46-aedb-45b7e9099e39/amplify/backend/api/todoclub/schema.graphql",
+    "gqlSchemaPath": "/tmp/amplify-fd1c6b47-8037-4969-898f-0ebf5877e31e/amplify/backend/api/todoclub/schema.graphql",
     "defaultAuthType": {
       "mode": "API_KEY",
       "keyDescription": "api key description",

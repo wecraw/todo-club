@@ -1,6 +1,63 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createUserData = /* GraphQL */ `
+  mutation CreateUserData(
+    $input: CreateUserDataInput!
+    $condition: ModelUserDataConditionInput
+  ) {
+    createUserData(input: $input, condition: $condition) {
+      id
+      username
+      email
+      profilePicture
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const updateUserData = /* GraphQL */ `
+  mutation UpdateUserData(
+    $input: UpdateUserDataInput!
+    $condition: ModelUserDataConditionInput
+  ) {
+    updateUserData(input: $input, condition: $condition) {
+      id
+      username
+      email
+      profilePicture
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const deleteUserData = /* GraphQL */ `
+  mutation DeleteUserData(
+    $input: DeleteUserDataInput!
+    $condition: ModelUserDataConditionInput
+  ) {
+    deleteUserData(input: $input, condition: $condition) {
+      id
+      username
+      email
+      profilePicture
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
 export const createCategory = /* GraphQL */ `
   mutation CreateCategory(
     $input: CreateCategoryInput!
@@ -17,7 +74,6 @@ export const createCategory = /* GraphQL */ `
           category
           completed
           picture
-          todolistID
           categoryID
           createdAt
           updatedAt
@@ -54,7 +110,6 @@ export const updateCategory = /* GraphQL */ `
           category
           completed
           picture
-          todolistID
           categoryID
           createdAt
           updatedAt
@@ -91,7 +146,6 @@ export const deleteCategory = /* GraphQL */ `
           category
           completed
           picture
-          todolistID
           categoryID
           createdAt
           updatedAt
@@ -123,7 +177,6 @@ export const createTodo = /* GraphQL */ `
       category
       completed
       picture
-      todolistID
       categoryID
       createdAt
       updatedAt
@@ -145,7 +198,6 @@ export const updateTodo = /* GraphQL */ `
       category
       completed
       picture
-      todolistID
       categoryID
       createdAt
       updatedAt
@@ -167,7 +219,6 @@ export const deleteTodo = /* GraphQL */ `
       category
       completed
       picture
-      todolistID
       categoryID
       createdAt
       updatedAt
@@ -186,25 +237,6 @@ export const createTodoList = /* GraphQL */ `
     createTodoList(input: $input, condition: $condition) {
       id
       name
-      Todos {
-        items {
-          id
-          description
-          category
-          completed
-          picture
-          todolistID
-          categoryID
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        nextToken
-        startedAt
-      }
       Categories {
         items {
           id
@@ -237,25 +269,6 @@ export const updateTodoList = /* GraphQL */ `
     updateTodoList(input: $input, condition: $condition) {
       id
       name
-      Todos {
-        items {
-          id
-          description
-          category
-          completed
-          picture
-          todolistID
-          categoryID
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        nextToken
-        startedAt
-      }
       Categories {
         items {
           id
@@ -288,25 +301,6 @@ export const deleteTodoList = /* GraphQL */ `
     deleteTodoList(input: $input, condition: $condition) {
       id
       name
-      Todos {
-        items {
-          id
-          description
-          category
-          completed
-          picture
-          todolistID
-          categoryID
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        nextToken
-        startedAt
-      }
       Categories {
         items {
           id

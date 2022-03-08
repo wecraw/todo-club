@@ -1,3 +1,10 @@
+type UserData @model @auth(rules: [{allow: owner}]) {
+  id: ID!
+  username: String
+  email: String
+  profilePicture: String
+}
+
 type Category @model @auth(rules: [{allow: owner}, {allow: groups, groups: ["Admin"]}]) @aws_cognito_user_pools {
   id: ID!
   name: String!
@@ -11,14 +18,12 @@ type Todo @model @auth(rules: [{allow: owner}, {allow: groups, groups: ["Admin"]
   category: String
   completed: Boolean
   picture: String
-  todolistID: ID! @index(name: "byTodoList")
   categoryID: ID! @index(name: "byCategory")
 }
 
 type TodoList @model @auth(rules: [{allow: owner}, {allow: groups, groups: ["Admin"]}]) @aws_cognito_user_pools {
   id: ID!
   name: String!
-  Todos: [Todo] @hasMany(indexName: "byTodoList", fields: ["id"])
   Categories: [Category] @hasMany(indexName: "byTodoList", fields: ["id"])
 }
  

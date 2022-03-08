@@ -40,13 +40,23 @@ export default function App() {
   //   }
   // }
 
+  async function onFirstSignUp(){
+    //TODO: create user object with null fields except email
+  }
+
+  async function deleteTodoList({ id }) {
+    const newTodoListsArray = todoLists.filter(todoList => todoList.id !== id);
+    setTodos(newTodoListsArray);
+    await API.graphql({ query: deleteTodoListMutation, variables: { input: { id } }});
+  }
+
   Hub.listen('auth', (data) => {
     switch (data.payload.event) {
       case 'signIn':
-        fetchTodoLists()
-        break;
+          fetchTodoLists()
+          break;
       case 'signUp':
-          console.log('user signed up');
+          onFirstSignUp()
           break;
       case 'signOut':
         try {
@@ -79,6 +89,8 @@ export default function App() {
                 
                 <div key={todoList.name}>
                   {todoList.name}
+                  <Button onClick={() => deleteTodoList(todoList.id)}></Button>
+
                 </div>
               ))
             }
