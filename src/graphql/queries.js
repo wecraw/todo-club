@@ -10,9 +10,6 @@ export const getUserData = /* GraphQL */ `
       profilePicture
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -31,43 +28,9 @@ export const listUserData = /* GraphQL */ `
         profilePicture
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncUserData = /* GraphQL */ `
-  query SyncUserData(
-    $filter: ModelUserDataFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncUserData(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        username
-        email
-        profilePicture
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -87,19 +50,12 @@ export const getCategory = /* GraphQL */ `
           categoryID
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           owner
         }
         nextToken
-        startedAt
       }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -117,50 +73,12 @@ export const listCategories = /* GraphQL */ `
         todolistID
         Todos {
           nextToken
-          startedAt
         }
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncCategories = /* GraphQL */ `
-  query SyncCategories(
-    $filter: ModelCategoryFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncCategories(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        name
-        todolistID
-        Todos {
-          nextToken
-          startedAt
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -175,9 +93,6 @@ export const getTodo = /* GraphQL */ `
       categoryID
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -198,45 +113,9 @@ export const listTodos = /* GraphQL */ `
         categoryID
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncTodos = /* GraphQL */ `
-  query SyncTodos(
-    $filter: ModelTodoFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncTodos(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        description
-        category
-        completed
-        picture
-        categoryID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -252,19 +131,12 @@ export const getTodoList = /* GraphQL */ `
           todolistID
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           owner
         }
         nextToken
-        startedAt
       }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -281,49 +153,12 @@ export const listTodoLists = /* GraphQL */ `
         name
         Categories {
           nextToken
-          startedAt
         }
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         owner
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncTodoLists = /* GraphQL */ `
-  query SyncTodoLists(
-    $filter: ModelTodoListFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncTodoLists(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        name
-        Categories {
-          nextToken
-          startedAt
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
-      nextToken
-      startedAt
     }
   }
 `;

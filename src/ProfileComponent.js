@@ -9,7 +9,7 @@ import Auth from '@aws-amplify/auth';
 const initialFormState = { name: '' }
 
 
-function AddTodo(props) {
+function Profile(props) {
 
         const [show, setShow] = useState(false);
         const [disabled, setDisabled] = useState(true);
@@ -20,25 +20,8 @@ function AddTodo(props) {
           setShow(false);
         }
 
-        const handleShowNewListModal = () => setShow(true);
+        const handleShowProfileModal = () => setShow(true);
         const [formData, setFormData] = useState(initialFormState);
-        
-        // useEffect(() => {
-        //   fetchTodos();
-        // }, []);
-        
-        // async function fetchTodos() {
-        //   const apiData = await API.graphql({ query: listTodos });
-        //   const todosFromAPI = apiData.data.listTodos.items;
-        //   await Promise.all(todosFromAPI.map(async todo => {
-        //     if (todo.image) {
-        //       const image = await Storage.get(todo.image);
-        //       todo.image = image;
-        //     }
-        //     return todo;
-        //   }))
-        //   setTodos(apiData.data.listTodos.items);
-        // }
         
         async function onChange(e) {
           if (!e.target.files[0]) return
@@ -92,7 +75,7 @@ function AddTodo(props) {
                 placeholder="Todo list name"
                 value={formData.name}
               /> */}
-            <Button onClick={handleShowNewListModal}>Create new todo club</Button>
+            <Button onClick={handleShowProfileModal}>{props.email}</Button>
 
             <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
@@ -113,24 +96,9 @@ function AddTodo(props) {
             </Modal.Footer>
           </Modal>
 
-
-            {/* <div style={{marginBottom: 30}}>
-                {
-                todos.map(todo => (
-                    <div key={todo.id || todo.name}>
-                    <h2>{todo.name}</h2>
-                    <p>{todo.description}</p>
-                    <button onClick={() => deleteTodo(todo)}>Delete todo</button>
-                    {
-                        todo.image && <img src={todo.image} style={{width: 400}} />
-                    }
-                    </div>
-                ))
-                }
-            </div>  */}
           </div>
 
         )
 } 
 
-export default AddTodo;
+export default Profile;

@@ -5,14 +5,14 @@ type UserData @model @auth(rules: [{allow: owner}]) {
   profilePicture: String
 }
 
-type Category @model @auth(rules: [{allow: owner}, {allow: groups, groups: ["Admin"]}]) @aws_cognito_user_pools {
+type Category @model @auth(rules: [{allow: owner, operations: [create, delete, read, update]}, {allow: groups, groups: ["Admin"], operations: [create, delete, read, update]}]) @aws_cognito_user_pools {
   id: ID!
   name: String!
   todolistID: ID! @index(name: "byTodoList")
   Todos: [Todo] @hasMany(indexName: "byCategory", fields: ["id"])
 }
 
-type Todo @model @auth(rules: [{allow: owner}, {allow: groups, groups: ["Admin"]}]) @aws_cognito_user_pools {
+type Todo @model @auth(rules: [{allow: owner, operations: [create, delete, read, update]}, {allow: groups, groups: ["Admin"], operations: [create, delete, read, update]}]) @aws_cognito_user_pools {
   id: ID!
   description: String!
   category: String
@@ -21,7 +21,7 @@ type Todo @model @auth(rules: [{allow: owner}, {allow: groups, groups: ["Admin"]
   categoryID: ID! @index(name: "byCategory")
 }
 
-type TodoList @model @auth(rules: [{allow: owner}, {allow: groups, groups: ["Admin"]}]) @aws_cognito_user_pools {
+type TodoList @model @auth(rules: [{allow: owner, operations: [create, delete, read, update]}, {allow: groups, groups: ["Admin"], operations: [create, delete, read, update]}]) @aws_cognito_user_pools {
   id: ID!
   name: String!
   Categories: [Category] @hasMany(indexName: "byTodoList", fields: ["id"])

@@ -13,9 +13,6 @@ export const createUserData = /* GraphQL */ `
       profilePicture
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -32,9 +29,6 @@ export const updateUserData = /* GraphQL */ `
       profilePicture
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -51,9 +45,6 @@ export const deleteUserData = /* GraphQL */ `
       profilePicture
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -77,19 +68,12 @@ export const createCategory = /* GraphQL */ `
           categoryID
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           owner
         }
         nextToken
-        startedAt
       }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -113,19 +97,12 @@ export const updateCategory = /* GraphQL */ `
           categoryID
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           owner
         }
         nextToken
-        startedAt
       }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -149,19 +126,12 @@ export const deleteCategory = /* GraphQL */ `
           categoryID
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           owner
         }
         nextToken
-        startedAt
       }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -180,9 +150,6 @@ export const createTodo = /* GraphQL */ `
       categoryID
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -201,9 +168,6 @@ export const updateTodo = /* GraphQL */ `
       categoryID
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -222,9 +186,6 @@ export const deleteTodo = /* GraphQL */ `
       categoryID
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -244,19 +205,12 @@ export const createTodoList = /* GraphQL */ `
           todolistID
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           owner
         }
         nextToken
-        startedAt
       }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -276,19 +230,12 @@ export const updateTodoList = /* GraphQL */ `
           todolistID
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           owner
         }
         nextToken
-        startedAt
       }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }
@@ -308,19 +255,12 @@ export const deleteTodoList = /* GraphQL */ `
           todolistID
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           owner
         }
         nextToken
-        startedAt
       }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       owner
     }
   }

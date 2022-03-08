@@ -4,10 +4,11 @@ import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import awsExports from './aws-exports';
 import './App.css';
-import AddTodo from './AddTodoComponent';
+import AddTodoList from './AddTodoListComponent';
+import Profile from './ProfileComponent';
 import Button from 'react-bootstrap/Button';
-import { listTodoLists } from './graphql/queries';
-import { deleteTodoList as deleteTodoListMutation } from './graphql/mutations';
+import { listTodoLists, listUserData, getTodoList } from './graphql/queries';
+import { createUserData as createUserDataMutation, deleteTodoList as deleteTodoListMutation } from './graphql/mutations';
 
 Amplify.configure(awsExports);
 
@@ -15,49 +16,48 @@ Amplify.configure(awsExports);
 export default function App() {
 
   const [todoLists, setTodoLists] = useState([]);
+  const [userData, setUserData] = useState([]);
+  const [showAllLists, setShowAllLists] = useState([false])
+  const [currentUserEmail, setCurrentUserEmail] = useState("");
 
     useEffect(() => {
     fetchTodoLists();
+    getEmail()
   }, []);
   
   async function fetchTodoLists() {
     const apiData = await API.graphql({ query: listTodoLists, authMode: 'AMAZON_COGNITO_USER_POOLS' });
     const todoListsFromAPI = apiData.data.listTodoLists.items;
-    console.log("hoe")
-
     await Promise.all(todoListsFromAPI.map(async todoList => {
       return todoList;
     }))
-    console.log("hoe")
     setTodoLists(apiData.data.listTodoLists.items);
+    setShowAllLists(apiData.data.listTodoLists.items.length > 1)
   }
 
-  // async function signOut(){
-  //   Auth.signOut();
-  //   try {
-  //     setTodoLists([])
-  //   } catch (e) {
-  //     return //catch error refreshing (i.e. clearing) list of to-dos on sign out
-  //   }
-  // }
-
-  async function onFirstSignUp(){
-    //TODO: create user object with null fields except email
-  }
-
+  //this should only be visible if there are two or more todolists i.e. one needs to get cleared
   async function deleteTodoList({ id }) {
     const newTodoListsArray = todoLists.filter(todoList => todoList.id !== id);
     setTodoLists(newTodoListsArray);
-    await API.graphql({ query: deleteTodoListMutation, variables: { input: { id } }});
+    await API.graphql({ query: deleteTodoListMutation, variables: { input: { id } }, authMode: 'AMAZON_COGNITO_USER_POOLS'});
+  }
+
+  async function getEmail(){
+    const email = await Auth.currentAuthenticatedUser().then((user) => {
+      let email = user.attributes.email;
+      return email
+    })
+    setCurrentUserEmail(email)
   }
 
   Hub.listen('auth', (data) => {
     switch (data.payload.event) {
       case 'signIn':
+          getEmail()
           fetchTodoLists()
           break;
       case 'signUp':
-          onFirstSignUp()
+          // onFirstSignUp()
           break;
       case 'signOut':
         try {
@@ -69,8 +69,6 @@ export default function App() {
       case 'signIn_failure':
           console.log('user sign in failed');
           break;
-      case 'configured':
-          console.log('the Auth module is configured');
     }
   });
 
@@ -81,24 +79,29 @@ export default function App() {
       <Authenticator>
         {({ signOut, user }) => (
           <main>
-            <AddTodo />
+            {/* <AddTodoList /> removing this bc shouldn't be a need to create multiple lists */}
             <Button style={{marginTop: '30px'}} onClick={fetchTodoLists}>Refresh todo lists</Button>
 
             <div style={{marginBottom: 30}}>
-            {
+            { showAllLists &&
+              
               todoLists.map(todoList => (
-                
                 <div key={todoList.name}>
                   {todoList.name}
-                  <Button onClick={() => deleteTodoList(todoList.id)}></Button>
+                  <Button onClick={() => deleteTodoList(todoList)}></Button>
 
                 </div>
               ))
             }
+            { !showAllLists &&
+                <div>
+                  you've only got one list! nice
+                  </div>
+            }
             </div>
 
             <br></br>
-            <h1>Hello {user.username}. How are you?</h1>
+            <h1>Hello {currentUserEmail}. How are you?</h1>
             <button onClick={signOut}>Sign out</button>
           </main>
         )}
