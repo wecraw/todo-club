@@ -40,20 +40,6 @@ export const getCategory = /* GraphQL */ `
       id
       name
       todolistID
-      Todos {
-        items {
-          id
-          description
-          category
-          completed
-          picture
-          categoryID
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
       createdAt
       updatedAt
       owner
@@ -71,9 +57,6 @@ export const listCategories = /* GraphQL */ `
         id
         name
         todolistID
-        Todos {
-          nextToken
-        }
         createdAt
         updatedAt
         owner
@@ -90,7 +73,6 @@ export const getTodo = /* GraphQL */ `
       category
       completed
       picture
-      categoryID
       createdAt
       updatedAt
       owner
@@ -110,7 +92,6 @@ export const listTodos = /* GraphQL */ `
         category
         completed
         picture
-        categoryID
         createdAt
         updatedAt
         owner

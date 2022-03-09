@@ -9,7 +9,6 @@ type Category @model @auth(rules: [{allow: owner, operations: [create, delete, r
   id: ID!
   name: String!
   todolistID: ID! @index(name: "byTodoList")
-  Todos: [Todo] @hasMany(indexName: "byCategory", fields: ["id"])
 }
 
 type Todo @model @auth(rules: [{allow: owner, operations: [create, delete, read, update]}, {allow: groups, groups: ["Admin"], operations: [create, delete, read, update]}]) @aws_cognito_user_pools {
@@ -18,7 +17,6 @@ type Todo @model @auth(rules: [{allow: owner, operations: [create, delete, read,
   category: String
   completed: Boolean
   picture: String
-  categoryID: ID! @index(name: "byCategory")
 }
 
 type TodoList @model @auth(rules: [{allow: owner, operations: [create, delete, read, update]}, {allow: groups, groups: ["Admin"], operations: [create, delete, read, update]}]) @aws_cognito_user_pools {

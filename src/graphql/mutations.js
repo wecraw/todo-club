@@ -58,20 +58,6 @@ export const createCategory = /* GraphQL */ `
       id
       name
       todolistID
-      Todos {
-        items {
-          id
-          description
-          category
-          completed
-          picture
-          categoryID
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
       createdAt
       updatedAt
       owner
@@ -87,20 +73,6 @@ export const updateCategory = /* GraphQL */ `
       id
       name
       todolistID
-      Todos {
-        items {
-          id
-          description
-          category
-          completed
-          picture
-          categoryID
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
       createdAt
       updatedAt
       owner
@@ -116,20 +88,6 @@ export const deleteCategory = /* GraphQL */ `
       id
       name
       todolistID
-      Todos {
-        items {
-          id
-          description
-          category
-          completed
-          picture
-          categoryID
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
       createdAt
       updatedAt
       owner
@@ -147,7 +105,6 @@ export const createTodo = /* GraphQL */ `
       category
       completed
       picture
-      categoryID
       createdAt
       updatedAt
       owner
@@ -165,7 +122,6 @@ export const updateTodo = /* GraphQL */ `
       category
       completed
       picture
-      categoryID
       createdAt
       updatedAt
       owner
@@ -183,7 +139,6 @@ export const deleteTodo = /* GraphQL */ `
       category
       completed
       picture
-      categoryID
       createdAt
       updatedAt
       owner
