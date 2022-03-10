@@ -12,7 +12,6 @@ function AddTodo({props, callback}) {
 
         const handleCreateNewTodo = () => {
           setIsAddingTodo(false)
-          callback()
           createTodo();
         }
         const [formData, setFormData] = useState(initialFormState);
@@ -45,23 +44,25 @@ function AddTodo({props, callback}) {
 
           await API.graphql({ query: createTodoMutation, variables: { input: newTodoData }, authMode: 'AMAZON_COGNITO_USER_POOLS' });
           setFormData(initialFormState);
+          callback()
         }
         
     
         return (
-            <div className={"todo-list"}>
+            <div className={"add-todo"}>
 
               { isAddingTodo &&
                 <input
+                  className={"new-todo-input"}
                   autoFocus
                   onChange={e => setFormData({ ...formData, 'description': e.target.value})}
-                  placeholder="Add a todo"
+                  placeholder="Add new todo"
                   value={formData.description || ''}
                   onBlur={handleCreateNewTodo}
                 />
               }
               { !isAddingTodo &&
-                <Button onClick={handleNewTodoClick} >Add new todo</Button>
+                <button className={'add-todo-button'} onClick={handleNewTodoClick} >+ Add new todo</button>
               }
 
           </div>

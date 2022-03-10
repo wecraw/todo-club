@@ -49,6 +49,7 @@ export default function App() {
   async function fetchTodos() {
     const apiData = await API.graphql({ query: listTodos, authMode: 'AMAZON_COGNITO_USER_POOLS' });
     const todosFromAPI = apiData.data.listTodos.items;
+    console.log(todosFromAPI)
     await Promise.all(todosFromAPI.map(async todo => {
       return todo;
     }))
@@ -112,19 +113,20 @@ export default function App() {
       <Authenticator>
         {({ signOut, user }) => (
           <main>
-            <Button onClick={fetchTodos}>refresh todos</Button>
-            { !categoryView &&
-              
-              todos.map(todo => (
-                  <div key={todo.description}>
-                  {todo.description}
-                  <Button onClick={() => deleteTodo(todo)}></Button>
+            <div className={"todo-column"}>
+              { !categoryView &&
+                
+                todos.map(todo => (
+                    <div className={"todo-column-item"} key={todo.description}>
+                    {todo.description}
+                    <Button onClick={() => deleteTodo(todo)}></Button>
 
-                </div>
-              ))
-            }
+                  </div>
+                ))
+              }
+            </div>
             { !categoryView && 
-                <AddTodo callback={testCallback} />
+                <AddTodo callback={fetchTodos} />
             }
 
                 <Fab className="view-toggle-fab" onClick={toggleCategoryView} color="primary" aria-label="add">
