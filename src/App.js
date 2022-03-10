@@ -8,6 +8,7 @@ import AddTodoList from './AddTodoListComponent';
 import AddCategory from './AddCategoryComponent';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
 import Fab from '@mui/material/Fab';
 import GridViewIcon from '@mui/icons-material/GridView';
 import ListIcon from '@mui/icons-material/List'
@@ -81,31 +82,46 @@ export default function App() {
     }
   });
 
+
   return (
       
     <div className="App">
-      <h1>Welcome!</h1>
+      <Container >
+        <div className={'header-row'}>
+          <h1>Todo</h1>
+          <div class="img-row">
+            <img className={'heart-img-m'} src={"/assets/m_heart.png"}></img>
+            <img className={'heart-img-w'} src={"/assets/w_heart.png"}></img>
+          </div>
+        </div>
       <Authenticator>
         {({ signOut, user }) => (
           <main>
 
                 <Fab className="view-toggle-fab" onClick={toggleCategoryView} color="primary" aria-label="add">
                   { !categoryView &&
+                  <Zoom timeout={200} in={!categoryView}>
                     <GridViewIcon />
+                  </Zoom>
                   }
                   { categoryView &&
+
+                  <Zoom timeout={200} in={categoryView}>
                     <ListIcon />
+
+                  </Zoom>
                   }
                 </Fab>
+                <div className={categoryView ? "fab-visible" : "fab-hidden"}>
+                  
+                  <AddCategory  />
+                  
+                </div>
             
-            { categoryView && 
-              <div>
-                <AddCategory />
-              </div>
-            }
+
             {/* <AddTodoList /> removing this bc shouldn't be a need to create multiple lists */}
 
-            <Button style={{marginTop: '30px'}} onClick={fetchTodoLists}>Refresh todo lists</Button>
+            {/* <Button style={{marginTop: '30px'}} onClick={fetchTodoLists}>Refresh todo lists</Button> */}
 
             <div style={{marginBottom: 30}}>
             { showAllLists &&
@@ -118,9 +134,8 @@ export default function App() {
                 </div>
               ))
             }
-            { !showAllLists &&
+            { !showAllLists && categoryView &&
                 <div>
-                  you've only got one list! nice. here are the categories:
                   { 
                     categories.map(category => (
                         <div key={category.name}>
@@ -142,6 +157,7 @@ export default function App() {
           </main>
         )}
       </Authenticator>
+      </Container>
       </div>
   );
 }

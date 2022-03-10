@@ -27,14 +27,6 @@ function AddCategory(props) {
         const handleShowNewCategoryModal = () => setShow(true);
         const [formData, setFormData] = useState(initialFormState);
         
-        // async function onChange(e) {
-        //   if (!e.target.files[0]) return
-        //   const file = e.target.files[0];
-        //   setFormData({ ...formData, image: file.name });
-        //   await Storage.put(file.name, file);
-        //   // fetchTodos();
-        // }
-
         function updateForm(value){
           setButtonDisabled(value);
           setFormData({ ...formData, 'name': value});
@@ -50,6 +42,10 @@ function AddCategory(props) {
         
         async function createCategory() {
           if (!formData.name) return;
+          if (formData.name === "_uncategorized"){  //can't make another category with this name since it's used to sort uncategorized todos
+            console.log("plz don't do that")
+            return
+          }
 
           let newCategoryData = {
             name: formData.name,

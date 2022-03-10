@@ -2,17 +2,6 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -22,6 +11,10 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+h1 {
+  font-size: 3.5rem !important;
 }
 
 .App-link {
@@ -42,4 +35,35 @@
   position: fixed !important;
   bottom: 20px;
   right: 20px;
+}
+
+.fab-visible{
+  opacity: 1;
+  transition: all 1s;
+}
+
+.fab-hidden{
+  opacity: 0;
+  transition: all 1s;
+  pointer-events: none;
+}
+
+.header-row{
+  display: flex;
+  align-items: center;
+}
+
+.img-row{
+  margin-bottom: 5px;
+  margin-left: 5px;
+}
+
+.heart-img-m{
+  height: 33px;
+  margin-top: 8px;
+}
+
+.heart-img-w{
+  height: 44px;
+  margin-bottom: 5px;
 }
