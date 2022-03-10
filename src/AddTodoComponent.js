@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { createTodo as createTodoMutation } from './graphql/mutations';
 import { API, Storage } from 'aws-amplify';
 import Button from 'react-bootstrap/Button';
@@ -8,27 +8,31 @@ import Auth from '@aws-amplify/auth';
 const initialFormState = { name: '' }
 
 
-function AddTodo(props) {
+function AddTodo({props, callback}) {
 
         const handleCreateNewTodo = () => {
+          setIsAddingTodo(false)
+          callback()
           createTodo();
-          setShow(false);
         }
-
-        const handleShowNewListModal = () => setShow(true);
         const [formData, setFormData] = useState(initialFormState);
+        const [isAddingTodo, setIsAddingTodo] = useState(false);
+        async function onChange(e) {
+          // if (!e.target.files[0]) return
+          // const file = e.target.files[0];
+          // setFormData({ ...formData, image: file.name });
+          // await Storage.put(file.name, file);
+          // fetchTodos();
+        }
         
-        // async function onChange(e) {
-        //   if (!e.target.files[0]) return
-        //   const file = e.target.files[0];
-        //   setFormData({ ...formData, image: file.name });
-        //   await Storage.put(file.name, file);
-        //   // fetchTodos();
-        // }
+
 
         function updateForm(value){
-          setButtonDisabled(value);
           setFormData({ ...formData, 'description': value});
+        }
+        
+        function handleNewTodoClick(){
+          setIsAddingTodo(true)
         }
         
         async function createTodo() {
@@ -45,17 +49,24 @@ function AddTodo(props) {
         
     
         return (
-            <div>
-              <input
-                onChange={e => setFormData({ ...formData, 'description': e.target.value})}
-                placeholder="Add a todo"
-                value={formData.description}
-              />
-            <Button onClick={handleShowNewListModal}>Create new todo club</Button>
+            <div className={"todo-list"}>
+
+              { isAddingTodo &&
+                <input
+                  autoFocus
+                  onChange={e => setFormData({ ...formData, 'description': e.target.value})}
+                  placeholder="Add a todo"
+                  value={formData.description || ''}
+                  onBlur={handleCreateNewTodo}
+                />
+              }
+              { !isAddingTodo &&
+                <Button onClick={handleNewTodoClick} >Add new todo</Button>
+              }
 
           </div>
 
         )
 } 
 
-export default AddTodoList;
+export default AddTodo;

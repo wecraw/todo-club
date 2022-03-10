@@ -88,21 +88,6 @@ function AddCategory(props) {
             </Modal.Footer>
           </Modal>
 
-
-            {/* <div style={{marginBottom: 30}}>
-                {
-                todos.map(todo => (
-                    <div key={todo.id || todo.name}>
-                    <h2>{todo.name}</h2>
-                    <p>{todo.description}</p>
-                    <button onClick={() => deleteTodo(todo)}>Delete todo</button>
-                    {
-                        todo.image && <img src={todo.image} style={{width: 400}} />
-                    }
-                    </div>
-                ))
-                }
-            </div>  */}
           </div>
 
         )

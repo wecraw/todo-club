@@ -6,14 +6,15 @@ import awsExports from './aws-exports';
 import './App.css';
 import AddTodoList from './AddTodoListComponent';
 import AddCategory from './AddCategoryComponent';
+import AddTodo from './AddTodoComponent';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Fab from '@mui/material/Fab';
 import GridViewIcon from '@mui/icons-material/GridView';
 import ListIcon from '@mui/icons-material/List'
-import { listTodoLists, listUserData, getTodoList, listCategories } from './graphql/queries';
-import { createUserData as createUserDataMutation, deleteTodoList as deleteTodoListMutation } from './graphql/mutations';
+import { listTodoLists, listTodos, listCategories } from './graphql/queries';
+import { deleteTodo as deleteTodoMutation, deleteTodoList as deleteTodoListMutation } from './graphql/mutations';
 import Zoom from '@mui/material/Zoom';
 
 Amplify.configure(awsExports);
@@ -25,13 +26,13 @@ export default function App() {
   const [categories, setCategories] = useState([])
   const [userData, setUserData] = useState([]);
   const [showAllLists, setShowAllLists] = useState([false])
-  const [currentUserEmail, setCurrentUserEmail] = useState("");
   const [categoryView, setCategoryView] = useState(false)
+  const [todos, setTodos] = useState([])
 
     useEffect(() => {
     fetchTodoLists();
     fetchCategories();
-    getEmail()
+    fetchTodos();
   }, []);
   
   async function fetchTodoLists() {
@@ -42,6 +43,17 @@ export default function App() {
     }))
     setTodoLists(apiData.data.listTodoLists.items);
     setShowAllLists(apiData.data.listTodoLists.items.length > 1)
+  }
+
+
+  async function fetchTodos() {
+    const apiData = await API.graphql({ query: listTodos, authMode: 'AMAZON_COGNITO_USER_POOLS' });
+    const todosFromAPI = apiData.data.listTodos.items;
+    await Promise.all(todosFromAPI.map(async todo => {
+      return todo;
+    }))
+    setTodos(apiData.data.listTodos.items);
+    // setShowAllLists(apiData.data.listTodoLists.items.length > 1)
   }
 
   async function fetchCategories() {
@@ -61,12 +73,10 @@ export default function App() {
     await API.graphql({ query: deleteTodoListMutation, variables: { input: { id } }, authMode: 'AMAZON_COGNITO_USER_POOLS'});
   }
 
-  async function getEmail(){
-    const email = await Auth.currentAuthenticatedUser().then((user) => {
-      let email = user.attributes.email;
-      return email
-    })
-    setCurrentUserEmail(email)
+  async function deleteTodo({ id }) {
+    const newTodosArray = todos.filter(todo => todo.id !== id);
+    setTodos(newTodosArray);
+    await API.graphql({ query: deleteTodoMutation, variables: { input: { id } }, authMode: 'AMAZON_COGNITO_USER_POOLS'});
   }
   
   function toggleCategoryView(){
@@ -76,11 +86,16 @@ export default function App() {
   Hub.listen('auth', (data) => {
     switch (data.payload.event) {
       case 'signIn':
-          getEmail()
           fetchTodoLists()
           break;
     }
   });
+
+  function testCallback(){
+
+    fetchTodos()
+  }
+  
 
 
   return (
@@ -89,7 +104,7 @@ export default function App() {
       <Container >
         <div className={'header-row'}>
           <h1>Todo</h1>
-          <div class="img-row">
+          <div className="img-row">
             <img className={'heart-img-m'} src={"/assets/m_heart.png"}></img>
             <img className={'heart-img-w'} src={"/assets/w_heart.png"}></img>
           </div>
@@ -97,6 +112,20 @@ export default function App() {
       <Authenticator>
         {({ signOut, user }) => (
           <main>
+            <Button onClick={fetchTodos}>refresh todos</Button>
+            { !categoryView &&
+              
+              todos.map(todo => (
+                  <div key={todo.description}>
+                  {todo.description}
+                  <Button onClick={() => deleteTodo(todo)}></Button>
+
+                </div>
+              ))
+            }
+            { !categoryView && 
+                <AddTodo callback={testCallback} />
+            }
 
                 <Fab className="view-toggle-fab" onClick={toggleCategoryView} color="primary" aria-label="add">
                   { !categoryView &&
