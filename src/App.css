@@ -97,7 +97,7 @@ button.add-todo-button:focus{
 .todo-column{
   display: flex;
   flex-direction: column;
-  width: 300px;
+  width: 100%;
   margin-left: 5px;
   text-align: left;
 }
@@ -105,9 +105,20 @@ button.add-todo-button:focus{
 .todo-column-item{
   margin-bottom: 5px;
   display: flex;
+  width: 95%;
+  max-width: 500px;
 }
 
 .new-todo-input{
   margin-top: 5px;
   padding-left: 15px; 
+}
+
+.close-icon{
+  cursor: pointer;
+  margin-left: auto;
+}
+
+label {
+  min-width: 40px;
 }

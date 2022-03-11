@@ -23,6 +23,13 @@ function AddTodo({props, callback}) {
           // await Storage.put(file.name, file);
           // fetchTodos();
         }
+
+        function blurSelf(e){
+          if(e.code === "Enter"){
+            console.log("enter pressed")
+            e.target.blur()
+          }
+        }
         
 
 
@@ -56,6 +63,7 @@ function AddTodo({props, callback}) {
               { isAddingTodo &&
                 <input
                   className={"new-todo-input"}
+                  onKeyUp={e => blurSelf(e)}
                   autoFocus
                   onChange={e => setFormData({ ...formData, 'description': e.target.value})}
                   placeholder="Add new todo"

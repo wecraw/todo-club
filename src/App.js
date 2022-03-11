@@ -6,15 +6,20 @@ import awsExports from './aws-exports';
 import './App.css';
 import AddTodoList from './AddTodoListComponent';
 import AddCategory from './AddCategoryComponent';
+import UpdateTodo from './UpdateTodoComponent';
+import CompleteTodo from './CompleteTodoComponent';
 import AddTodo from './AddTodoComponent';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
+import Modal from 'react-bootstrap/Modal';
 import Fab from '@mui/material/Fab';
+import { XLg } from 'react-bootstrap-icons'
+import CloseIcon from '@mui/icons-material/Close'
 import GridViewIcon from '@mui/icons-material/GridView';
 import ListIcon from '@mui/icons-material/List'
 import { listTodoLists, listTodos, todosByDate, listCategories } from './graphql/queries';
-import { deleteCategory as deleteCategoryMutation, deleteTodo as deleteTodoMutation, deleteTodoList as deleteTodoListMutation } from './graphql/mutations';
+import { updateTodo as updateTodoMutation, deleteCategory as deleteCategoryMutation, deleteTodo as deleteTodoMutation, deleteTodoList as deleteTodoListMutation } from './graphql/mutations';
 import Zoom from '@mui/material/Zoom';
 
 Amplify.configure(awsExports);
@@ -24,16 +29,56 @@ export default function App() {
 
   const [todoLists, setTodoLists] = useState([]);
   const [categories, setCategories] = useState([])
-  const [userData, setUserData] = useState([]);
   const [showAllLists, setShowAllLists] = useState([false])
   const [categoryView, setCategoryView] = useState(false)
   const [todos, setTodos] = useState([])
+  const [showCompletionModal, setShowCompletionModal] = useState(false);
+  const [clickedTodo, setClickedTodo] = useState({})
+
 
     useEffect(() => {
     fetchTodoLists();
     fetchCategories();
     fetchTodos();
   }, []);
+
+
+  const handleCloseCompletionModal = () => setShowCompletionModal(false);
+  // const handleShowCompletionModal = () => setShowCompletionModal(true);
+
+  function handleShowCompletionModal(todo){
+    setClickedTodo(todo);
+    setShowCompletionModal(true);
+  }
+
+  const handleUpdateAndCloseCompletionModal = () => {
+    setShowCompletionModal(false)
+    fetchTodos()
+  }
+
+  Hub.listen('auth', (data) => {
+    switch (data.payload.event) {
+      case 'signIn':
+          fetchTodoLists()
+          break;
+    }
+  });
+  
+  function toggleCategoryView(){
+    setCategoryView(!categoryView)
+  }
+
+  async function onFileUpload(e) {
+    // if (!e.target.files[0]) return
+    // const file = e.target.files[0];
+    // setFormData({ ...formData, image: file.name });
+    // await Storage.put(file.name, file);
+    // fetchTodos();
+
+    console.log("ay")
+  }
+
+  ////////////////////////////////////////////CRUD////////////////////////////////////////////////////
   
   async function fetchTodoLists() {
     const apiData = await API.graphql({ query: listTodoLists, authMode: 'AMAZON_COGNITO_USER_POOLS' });
@@ -45,16 +90,29 @@ export default function App() {
     setShowAllLists(apiData.data.listTodoLists.items.length > 1)
   }
 
+  // async function updateTodo(){
+  //   if (!formData.description) return;
+
+  //   let newTodoData = {
+  //     description: formData.description,
+  //     category: "_uncategorized",
+  //     type: "todo",
+  //     completed: false
+  //   }          
+
+  //   await API.graphql({ query: createTodoMutation, variables: { input: newTodoData }, authMode: 'AMAZON_COGNITO_USER_POOLS' });
+  //   setFormData(initialFormState);
+  //   callback()
+  // }
+
 
   async function fetchTodos() {
     const apiData = await API.graphql({ query: todosByDate, authMode: 'AMAZON_COGNITO_USER_POOLS' });
     const todosFromAPI = apiData.data.todosByDate.items;
-    console.log(todosFromAPI)
     await Promise.all(todosFromAPI.map(async todo => {
       return todo;
     }))
     setTodos(apiData.data.todosByDate.items);
-    // setShowAllLists(apiData.data.listTodoLists.items.length > 1)
   }
 
   async function fetchCategories() {
@@ -64,7 +122,6 @@ export default function App() {
       return category;
     }))
     setCategories(apiData.data.listCategories.items);
-    // setShowAllLists(apiData.data.listTodoLists.items.length > 1)
   }
 
   //this should only be visible if there are two or more todolists i.e. one needs to get cleared
@@ -85,29 +142,17 @@ export default function App() {
     setCategories(newCategoriesArray);
     await API.graphql({ query: deleteCategoryMutation, variables: { input: { id } }, authMode: 'AMAZON_COGNITO_USER_POOLS'});
   }
-  
-  function toggleCategoryView(){
-    setCategoryView(!categoryView)
-  }
 
-  Hub.listen('auth', (data) => {
-    switch (data.payload.event) {
-      case 'signIn':
-          fetchTodoLists()
-          break;
-    }
-  });
 
-  function testCallback(){
 
-    fetchTodos()
-  }
-  
+  /////////////////////////////////////////////////END CRUD////////////////////////////////////////////////////////////////
 
 
   return (
       
     <div className="App">
+
+
       <Container >
         <div className={'header-row'}>
           <h1>Todo</h1>
@@ -120,18 +165,27 @@ export default function App() {
         {({ signOut, user }) => (
           <main>
             <div className={"todo-column"}>
+
               { !categoryView &&
                 
                 todos.map(todo => (
-                    <div className={"todo-column-item"} key={todo.description}>
-                    <Form.Check></Form.Check>
+                    <div className={"todo-column-item"} id={todo.id} key={todo.id}>
+                      
+                    <Form.Check  key={todo.id} id={todo.description} type={"checkbox"} label={todo.description} className={"checkbox"} onClick={() => handleShowCompletionModal(todo)}></Form.Check>
 
-                    {todo.description}
-                    <Button onClick={() => deleteTodo(todo)}></Button>
-
+                    <Modal show={showCompletionModal} onHide={handleCloseCompletionModal}>
+                      <UpdateTodo todoName={todo.description} todoId={todo.id} updateSuccessCallback={handleUpdateAndCloseCompletionModal} />
+                    </Modal>
+                    {/* <div className={"todo-label"}>{todo.description}</div> */}
+                    <div className={'close-icon'}>
+                      <CloseIcon onClick={() => deleteTodo(todo)} />
+                    </div>
                   </div>
                 ))
               }
+                <Modal show={showCompletionModal} onHide={handleCloseCompletionModal}>
+                      <CompleteTodo todoName={clickedTodo.description} todoId={clickedTodo.id} updateSuccessCallback={handleUpdateAndCloseCompletionModal} />
+                </Modal>
             </div>
             { !categoryView && 
                 <AddTodo callback={fetchTodos} />
@@ -168,7 +222,7 @@ export default function App() {
               todoLists.map(todoList => (
                   <div key={todoList.name}>
                   {todoList.name}
-                  <Button onClick={() => deleteTodoList(todoList)}></Button>
+                  <XLg onClick={() => deleteTodoList(todoList)} />
 
                 </div>
               ))
@@ -189,11 +243,8 @@ export default function App() {
             }
             </div>
 
-            <br></br>
-            {/* <h1>Hello {currentUserEmail}. How are you?</h1>
-            <button onClick={signOut}>Sign out</button>
-            not needed with 2 users really
-            */}
+
+
           </main>
         )}
       </Authenticator>
