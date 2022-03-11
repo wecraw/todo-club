@@ -45,8 +45,9 @@ export const onCreateCategory = /* GraphQL */ `
     onCreateCategory(owner: $owner) {
       id
       name
-      todolistID
+      type
       createdAt
+      todolistID
       updatedAt
       owner
     }
@@ -57,8 +58,9 @@ export const onUpdateCategory = /* GraphQL */ `
     onUpdateCategory(owner: $owner) {
       id
       name
-      todolistID
+      type
       createdAt
+      todolistID
       updatedAt
       owner
     }
@@ -69,8 +71,9 @@ export const onDeleteCategory = /* GraphQL */ `
     onDeleteCategory(owner: $owner) {
       id
       name
-      todolistID
+      type
       createdAt
+      todolistID
       updatedAt
       owner
     }
@@ -82,9 +85,10 @@ export const onCreateTodo = /* GraphQL */ `
       id
       description
       category
+      type
+      createdAt
       completed
       picture
-      createdAt
       updatedAt
       owner
     }
@@ -96,9 +100,10 @@ export const onUpdateTodo = /* GraphQL */ `
       id
       description
       category
+      type
+      createdAt
       completed
       picture
-      createdAt
       updatedAt
       owner
     }
@@ -110,9 +115,10 @@ export const onDeleteTodo = /* GraphQL */ `
       id
       description
       category
+      type
+      createdAt
       completed
       picture
-      createdAt
       updatedAt
       owner
     }
@@ -127,8 +133,9 @@ export const onCreateTodoList = /* GraphQL */ `
         items {
           id
           name
-          todolistID
+          type
           createdAt
+          todolistID
           updatedAt
           owner
         }
@@ -149,8 +156,9 @@ export const onUpdateTodoList = /* GraphQL */ `
         items {
           id
           name
-          todolistID
+          type
           createdAt
+          todolistID
           updatedAt
           owner
         }
@@ -171,8 +179,9 @@ export const onDeleteTodoList = /* GraphQL */ `
         items {
           id
           name
-          todolistID
+          type
           createdAt
+          todolistID
           updatedAt
           owner
         }

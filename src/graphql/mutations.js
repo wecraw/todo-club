@@ -57,8 +57,9 @@ export const createCategory = /* GraphQL */ `
     createCategory(input: $input, condition: $condition) {
       id
       name
-      todolistID
+      type
       createdAt
+      todolistID
       updatedAt
       owner
     }
@@ -72,8 +73,9 @@ export const updateCategory = /* GraphQL */ `
     updateCategory(input: $input, condition: $condition) {
       id
       name
-      todolistID
+      type
       createdAt
+      todolistID
       updatedAt
       owner
     }
@@ -87,8 +89,9 @@ export const deleteCategory = /* GraphQL */ `
     deleteCategory(input: $input, condition: $condition) {
       id
       name
-      todolistID
+      type
       createdAt
+      todolistID
       updatedAt
       owner
     }
@@ -103,9 +106,10 @@ export const createTodo = /* GraphQL */ `
       id
       description
       category
+      type
+      createdAt
       completed
       picture
-      createdAt
       updatedAt
       owner
     }
@@ -120,9 +124,10 @@ export const updateTodo = /* GraphQL */ `
       id
       description
       category
+      type
+      createdAt
       completed
       picture
-      createdAt
       updatedAt
       owner
     }
@@ -137,9 +142,10 @@ export const deleteTodo = /* GraphQL */ `
       id
       description
       category
+      type
+      createdAt
       completed
       picture
-      createdAt
       updatedAt
       owner
     }
@@ -157,8 +163,9 @@ export const createTodoList = /* GraphQL */ `
         items {
           id
           name
-          todolistID
+          type
           createdAt
+          todolistID
           updatedAt
           owner
         }
@@ -182,8 +189,9 @@ export const updateTodoList = /* GraphQL */ `
         items {
           id
           name
-          todolistID
+          type
           createdAt
+          todolistID
           updatedAt
           owner
         }
@@ -207,8 +215,9 @@ export const deleteTodoList = /* GraphQL */ `
         items {
           id
           name
-          todolistID
+          type
           createdAt
+          todolistID
           updatedAt
           owner
         }

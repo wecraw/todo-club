@@ -39,8 +39,9 @@ export const getCategory = /* GraphQL */ `
     getCategory(id: $id) {
       id
       name
-      todolistID
+      type
       createdAt
+      todolistID
       updatedAt
       owner
     }
@@ -56,8 +57,39 @@ export const listCategories = /* GraphQL */ `
       items {
         id
         name
-        todolistID
+        type
         createdAt
+        todolistID
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const categoriesByDate = /* GraphQL */ `
+  query CategoriesByDate(
+    $type: String!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelCategoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    categoriesByDate(
+      type: $type
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        type
+        createdAt
+        todolistID
         updatedAt
         owner
       }
@@ -71,9 +103,10 @@ export const getTodo = /* GraphQL */ `
       id
       description
       category
+      type
+      createdAt
       completed
       picture
-      createdAt
       updatedAt
       owner
     }
@@ -90,9 +123,72 @@ export const listTodos = /* GraphQL */ `
         id
         description
         category
+        type
+        createdAt
         completed
         picture
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const todosByCategory = /* GraphQL */ `
+  query TodosByCategory(
+    $category: String!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelTodoFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    todosByCategory(
+      category: $category
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        description
+        category
+        type
         createdAt
+        completed
+        picture
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const todosByDate = /* GraphQL */ `
+  query TodosByDate(
+    $createdAt: ModelStringKeyConditionInput
+    $filter: ModelTodoFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    todosByDate(
+      type: "todo"
+      createdAt: $createdAt
+      sortDirection: ASC
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        description
+        category
+        type
+        createdAt
+        completed
+        picture
         updatedAt
         owner
       }
@@ -109,8 +205,9 @@ export const getTodoList = /* GraphQL */ `
         items {
           id
           name
-          todolistID
+          type
           createdAt
+          todolistID
           updatedAt
           owner
         }

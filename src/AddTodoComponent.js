@@ -39,7 +39,9 @@ function AddTodo({props, callback}) {
 
           let newTodoData = {
             description: formData.description,
-            category: "_uncategorized"
+            category: "_uncategorized",
+            type: "todo",
+            completed: false
           }          
 
           await API.graphql({ query: createTodoMutation, variables: { input: newTodoData }, authMode: 'AMAZON_COGNITO_USER_POOLS' });

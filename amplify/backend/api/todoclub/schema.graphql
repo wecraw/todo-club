@@ -8,14 +8,18 @@ type UserData @model @auth(rules: [{allow: owner}]) {
 type Category @model @auth(rules: [{allow: owner, operations: [create, delete, read, update]}, {allow: groups, groups: ["Admin"], operations: [create, delete, read, update]}]) @aws_cognito_user_pools {
   id: ID!
   name: String!
+  type: String! @index(name: "categoriesByDate", queryField: "categoriesByDate", sortKeyFields: ["createdAt"])
+  createdAt: String!
   todolistID: ID! @index(name: "byTodoList")
 }
 
 type Todo @model @auth(rules: [{allow: owner, operations: [create, delete, read, update]}, {allow: groups, groups: ["Admin"], operations: [create, delete, read, update]}]) @aws_cognito_user_pools {
   id: ID!
   description: String!
-  category: String
-  completed: Boolean
+  category: String! @index(name: "byCategory", queryField: "todosByCategory", sortKeyFields: ["createdAt"])
+  type: String! @index(name: "todosByDate", queryField: "todosByDate", sortKeyFields: ["createdAt"])
+  createdAt: String!
+  completed: Boolean!
   picture: String
 }
 

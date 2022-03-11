@@ -42,14 +42,15 @@ function AddCategory(props) {
         
         async function createCategory() {
           if (!formData.name) return;
-          if (formData.name === "_uncategorized"){  //can't make another category with this name since it's used to sort uncategorized todos
-            console.log("plz don't do that")
-            return
-          }
+          // if (formData.name === "_uncategorized"){  //can't make another category with this name since it's used to sort uncategorized todos
+          //   console.log("plz don't do that")
+          //   return
+          // }
 
           let newCategoryData = {
             name: formData.name,
-            todolistID: TODO_LIST_ID
+            todolistID: TODO_LIST_ID,
+            type: "category"
           }          
 
           await API.graphql({ query: createCategoryMutation, variables: { input: newCategoryData }, authMode: 'AMAZON_COGNITO_USER_POOLS' });

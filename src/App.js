@@ -13,8 +13,8 @@ import Container from 'react-bootstrap/Container';
 import Fab from '@mui/material/Fab';
 import GridViewIcon from '@mui/icons-material/GridView';
 import ListIcon from '@mui/icons-material/List'
-import { listTodoLists, listTodos, listCategories } from './graphql/queries';
-import { deleteTodo as deleteTodoMutation, deleteTodoList as deleteTodoListMutation } from './graphql/mutations';
+import { listTodoLists, listTodos, todosByDate, listCategories } from './graphql/queries';
+import { deleteCategory as deleteCategoryMutation, deleteTodo as deleteTodoMutation, deleteTodoList as deleteTodoListMutation } from './graphql/mutations';
 import Zoom from '@mui/material/Zoom';
 
 Amplify.configure(awsExports);
@@ -47,13 +47,13 @@ export default function App() {
 
 
   async function fetchTodos() {
-    const apiData = await API.graphql({ query: listTodos, authMode: 'AMAZON_COGNITO_USER_POOLS' });
-    const todosFromAPI = apiData.data.listTodos.items;
+    const apiData = await API.graphql({ query: todosByDate, authMode: 'AMAZON_COGNITO_USER_POOLS' });
+    const todosFromAPI = apiData.data.todosByDate.items;
     console.log(todosFromAPI)
     await Promise.all(todosFromAPI.map(async todo => {
       return todo;
     }))
-    setTodos(apiData.data.listTodos.items);
+    setTodos(apiData.data.todosByDate.items);
     // setShowAllLists(apiData.data.listTodoLists.items.length > 1)
   }
 
@@ -78,6 +78,12 @@ export default function App() {
     const newTodosArray = todos.filter(todo => todo.id !== id);
     setTodos(newTodosArray);
     await API.graphql({ query: deleteTodoMutation, variables: { input: { id } }, authMode: 'AMAZON_COGNITO_USER_POOLS'});
+  }
+
+  async function deleteCategory({ id }) {
+    const newCategoriesArray = categories.filter(category => category.id !== id);
+    setCategories(newCategoriesArray);
+    await API.graphql({ query: deleteCategoryMutation, variables: { input: { id } }, authMode: 'AMAZON_COGNITO_USER_POOLS'});
   }
   
   function toggleCategoryView(){
@@ -118,6 +124,8 @@ export default function App() {
                 
                 todos.map(todo => (
                     <div className={"todo-column-item"} key={todo.description}>
+                    <Form.Check></Form.Check>
+
                     {todo.description}
                     <Button onClick={() => deleteTodo(todo)}></Button>
 
@@ -171,6 +179,7 @@ export default function App() {
                     categories.map(category => (
                         <div key={category.name}>
                         {category.name}
+                        <Button onClick={() => deleteCategory(category)}></Button>
 
                       </div>
                     ))
