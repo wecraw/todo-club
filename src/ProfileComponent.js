@@ -79,7 +79,7 @@ function Profile(props) {
 
             <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-              <Modal.Title>Create a new Todo Club</Modal.Title>
+              <Modal.Title>Create a new Profile</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Form>

@@ -1,0 +1,13 @@
+{
+  "resourceName": "todopics",
+  "policyUUID": "0c0c4bbf",
+  "bucketName": "todoclubc8d9ea3a872d4f9482d07a5269bbc147",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE"
+}

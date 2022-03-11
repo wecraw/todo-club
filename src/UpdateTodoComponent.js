@@ -60,7 +60,7 @@ function UpdateTodo({todoId, todoName, updateSuccessCallback}) {
 
 
             <Modal.Header closeButton>
-            <Modal.Title>Create a new Category</Modal.Title>
+            <Modal.Title>Update todo</Modal.Title>
             </Modal.Header>
             <Modal.Body>
             <Form>

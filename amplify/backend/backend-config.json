@@ -70,5 +70,12 @@
         }
       }
     }
+  },
+  "storage": {
+    "todopics": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
+    }
   }
 }

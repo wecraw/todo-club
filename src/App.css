@@ -21,6 +21,11 @@ h1 {
   font-size: 3.5rem !important;
 }
 
+h2{
+  text-align: left;
+  margin-top: 35px !important;
+}
+
 .App-link {
   color: #61dafb;
 }

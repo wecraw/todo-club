@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { updateTodo, updateTodo as updateTodoMutation } from './graphql/mutations';
-import { API, Storage } from 'aws-amplify';
+import { updateTodo as updateTodoMutation } from './graphql/mutations';
+import { Amplify, API, Storage } from 'aws-amplify';
 import Modal from 'react-bootstrap/Modal';
+import awsExports from './aws-exports';
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Auth from '@aws-amplify/auth';
-
-const initialFormState = { description: '' }
+import { MDBFile } from 'mdb-react-ui-kit';
+const initialFormState = { image: '' }
 const TODO_LIST_ID = "91334d86-fbd0-434d-a81e-cf0da28ee262" //this is the ID for the singular todoList used between me and Miriam
                                                             //this would obviously not work in a scaled app
+Amplify.configure(awsExports);
 
 
-function CompleteTodo({todoId, todoName, updateSuccessCallback}) {
+function CompleteTodo({todoId, todoName, setCompleted, updateSuccessCallback, cancelCallback}) {
 
         const [disabled, setDisabled] = useState(true);
 
@@ -19,25 +19,24 @@ function CompleteTodo({todoId, todoName, updateSuccessCallback}) {
         
         function updateForm(value){
           setButtonDisabled(value);
-          setFormData({ ...formData, 'description': value});
+          setFormData({ ...formData, 'image': value});
         }
 
         function handleUpdateTodo(){
             updateTodo()
-            console.log(todoId)
-            console.log(todoName)
+        }
+
+        function handleCancel(){
+          cancelCallback()
         }
 
         async function updateTodo(){
-            if (!formData.description) return;
-            // if (formData.name === "_uncategorized"){  //can't make another category with this name since it's used to sort uncategorized todos
-            //   console.log("plz don't do that")
-            //   return
-            // }
-  
+            if (!formData.image) return;
+
             let newTodoData = {
-              description: formData.description,
+              picture: formData.image,
               id: todoId,
+              completed: setCompleted
             }          
   
             await API.graphql({ query: updateTodoMutation, variables: { input: newTodoData }, authMode: 'AMAZON_COGNITO_USER_POOLS' });
@@ -53,6 +52,18 @@ function CompleteTodo({todoId, todoName, updateSuccessCallback}) {
             setDisabled(false);
           }
         }
+
+        async function onChange(e) {
+          if (!e.target.files[0]) return
+          const file = e.target.files[0];
+          setFormData({ ...formData, image: file.name });
+          await Storage.put(file.name, file);
+          updateTodo()
+        }
+
+        function test(){
+          console.log("hey")
+        }
     
         return (
             <div>
@@ -63,16 +74,16 @@ function CompleteTodo({todoId, todoName, updateSuccessCallback}) {
             <Modal.Title>We did it!</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-            <Form>
-                <Form.Group className="mb-3" controlId="formUpdateTodo">
-                  <Form.Label>Add an image:</Form.Label>
-                  <Form.Control onChange={e => updateForm(e.target.value)} name="newTodoDescription" type="text" placeholder={todoName} />
-                </Form.Group>   
-              </Form>
+            <div className='file-container'>
+               <MDBFile onChange={onChange} label='Add a picture!' id='customFile' />
+            </div>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="primary" onClick={handleUpdateTodo} disabled={disabled}>
-                Create
+              <Button variant="secondary" onClick={handleCancel}>
+                Cancel
+              </Button>
+              <Button variant="primary" onClick={handleUpdateTodo}>
+                Complete
               </Button>
             </Modal.Footer>
 

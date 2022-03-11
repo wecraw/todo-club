@@ -6,7 +6,7 @@ import awsExports from './aws-exports';
 import './App.css';
 import AddTodoList from './AddTodoListComponent';
 import AddCategory from './AddCategoryComponent';
-import UpdateTodo from './UpdateTodoComponent';
+// import UpdateTodo from './UpdateTodoComponent';
 import CompleteTodo from './CompleteTodoComponent';
 import AddTodo from './AddTodoComponent';
 import Button from 'react-bootstrap/Button';
@@ -23,7 +23,6 @@ import { updateTodo as updateTodoMutation, deleteCategory as deleteCategoryMutat
 import Zoom from '@mui/material/Zoom';
 
 Amplify.configure(awsExports);
-
 
 export default function App() {
 
@@ -47,6 +46,7 @@ export default function App() {
   // const handleShowCompletionModal = () => setShowCompletionModal(true);
 
   function handleShowCompletionModal(todo){
+    console.log(todo)
     setClickedTodo(todo);
     setShowCompletionModal(true);
   }
@@ -55,6 +55,11 @@ export default function App() {
     setShowCompletionModal(false)
     fetchTodos()
   }
+
+  const handleCancelCompletionModal = () => {
+    setShowCompletionModal(false)
+  }
+
 
   Hub.listen('auth', (data) => {
     switch (data.payload.event) {
@@ -90,26 +95,14 @@ export default function App() {
     setShowAllLists(apiData.data.listTodoLists.items.length > 1)
   }
 
-  // async function updateTodo(){
-  //   if (!formData.description) return;
-
-  //   let newTodoData = {
-  //     description: formData.description,
-  //     category: "_uncategorized",
-  //     type: "todo",
-  //     completed: false
-  //   }          
-
-  //   await API.graphql({ query: createTodoMutation, variables: { input: newTodoData }, authMode: 'AMAZON_COGNITO_USER_POOLS' });
-  //   setFormData(initialFormState);
-  //   callback()
-  // }
-
-
   async function fetchTodos() {
     const apiData = await API.graphql({ query: todosByDate, authMode: 'AMAZON_COGNITO_USER_POOLS' });
     const todosFromAPI = apiData.data.todosByDate.items;
     await Promise.all(todosFromAPI.map(async todo => {
+      if (todo.picture){
+        const image = await Storage.get(todo.picture)
+        todo.picture = image
+      }
       return todo;
     }))
     setTodos(apiData.data.todosByDate.items);
@@ -168,14 +161,10 @@ export default function App() {
 
               { !categoryView &&
                 
-                todos.map(todo => (
+                todos.filter(todo => todo.completed === false).map(todo => (
                     <div className={"todo-column-item"} id={todo.id} key={todo.id}>
                       
                     <Form.Check  key={todo.id} id={todo.description} type={"checkbox"} label={todo.description} className={"checkbox"} onClick={() => handleShowCompletionModal(todo)}></Form.Check>
-
-                    <Modal show={showCompletionModal} onHide={handleCloseCompletionModal}>
-                      <UpdateTodo todoName={todo.description} todoId={todo.id} updateSuccessCallback={handleUpdateAndCloseCompletionModal} />
-                    </Modal>
                     {/* <div className={"todo-label"}>{todo.description}</div> */}
                     <div className={'close-icon'}>
                       <CloseIcon onClick={() => deleteTodo(todo)} />
@@ -184,12 +173,33 @@ export default function App() {
                 ))
               }
                 <Modal show={showCompletionModal} onHide={handleCloseCompletionModal}>
-                      <CompleteTodo todoName={clickedTodo.description} todoId={clickedTodo.id} updateSuccessCallback={handleUpdateAndCloseCompletionModal} />
+                      <CompleteTodo todoName={clickedTodo.description} setCompleted={!clickedTodo.completed} todoId={clickedTodo.id} cancelCallback={handleCancelCompletionModal} updateSuccessCallback={handleUpdateAndCloseCompletionModal} />
                 </Modal>
             </div>
             { !categoryView && 
                 <AddTodo callback={fetchTodos} />
             }
+            {
+              !categoryView && 
+              <h2>Completed</h2>
+
+            }
+            { !categoryView && 
+                
+                todos.filter(todo => todo.completed === true).map(todo => (
+                    <div className={"todo-column-item"} id={todo.id} key={todo.id}>
+                      
+                    <Form.Check  key={todo.id} id={todo.description} type={"checkbox"} label={todo.description} checked={true} className={"checkbox"} onClick={() => handleShowCompletionModal(todo)}></Form.Check>
+                    { todo.picture && 
+                      <img src={todo.picture}/>
+                    }
+                    {/* <div className={"todo-label"}>{todo.description}</div> */}
+                    <div className={'close-icon'}>
+                      <CloseIcon onClick={() => deleteTodo(todo)} />
+                    </div>
+                  </div>
+                ))
+              }
 
                 <Fab className="view-toggle-fab" onClick={toggleCategoryView} color="primary" aria-label="add">
                   { !categoryView &&

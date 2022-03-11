@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { createTodoList as createTodoListMutation } from './graphql/mutations';
-import { API, Storage } from 'aws-amplify';
+import { Amplify, API, Storage } from 'aws-amplify';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Auth from '@aws-amplify/auth';
+import awsExports from './aws-exports';
 
 const initialFormState = { name: '' }
 
