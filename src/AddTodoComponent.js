@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import { createTodo as createTodoMutation } from './graphql/mutations';
-import { API, Storage } from 'aws-amplify';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Auth from '@aws-amplify/auth';
+import { API } from 'aws-amplify';
 
 const initialFormState = { name: '' }
 
@@ -16,13 +13,6 @@ function AddTodo({props, callback}) {
         }
         const [formData, setFormData] = useState(initialFormState);
         const [isAddingTodo, setIsAddingTodo] = useState(false);
-        async function onChange(e) {
-          // if (!e.target.files[0]) return
-          // const file = e.target.files[0];
-          // setFormData({ ...formData, image: file.name });
-          // await Storage.put(file.name, file);
-          // fetchTodos();
-        }
 
         function blurSelf(e){
           if(e.code === "Enter"){
@@ -66,7 +56,7 @@ function AddTodo({props, callback}) {
                   onKeyUp={e => blurSelf(e)}
                   autoFocus
                   onChange={e => setFormData({ ...formData, 'description': e.target.value})}
-                  placeholder="Add new todo"
+                  placeholder=""
                   value={formData.description || ''}
                   onBlur={handleCreateNewTodo}
                 />
