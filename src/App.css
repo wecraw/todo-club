@@ -23,7 +23,9 @@ h1 {
 
 h2{
   text-align: left;
-  margin-top: 35px !important;
+  margin-top: 20px !important;
+  border-top: 1px solid lightgray;
+  padding-top: 10px;
 }
 
 .App-link {
@@ -63,6 +65,7 @@ button.add-todo-button {
   color: #2F4F4F;
   background: transparent;
   text-align: left;
+  padding-top: 5px;
 }
 
 button.add-todo-button:focus {
@@ -93,6 +96,27 @@ button.add-todo-button:focus{
   margin-bottom: 4px;  
 }
 
+.image-icon{
+  margin-left: 5px;
+  margin-bottom: 3px;
+}
+
+.image-modal-body{
+  display: flex;
+  justify-content: center;
+  padding: 0 !important;
+}
+
+.modal-content{
+  width: fit-content !important;
+  margin: auto !important;
+
+}
+
+.image-modal-image{
+  max-width: 100%;
+}
+
 .add-todo{
   display: flex;
   width: 300px;
@@ -117,6 +141,7 @@ button.add-todo-button:focus{
 .new-todo-input{
   margin-top: 5px;
   padding-left: 15px; 
+  height: 35px;
 }
 
 .close-icon{

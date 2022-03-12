@@ -1,4 +1,4 @@
-import { Amplify, API, Storage, Hub } from 'aws-amplify';
+import { Amplify, API, Storage, Auth, Hub } from 'aws-amplify';
 import React, { useState, useEffect } from 'react';
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
@@ -13,8 +13,9 @@ import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Modal from 'react-bootstrap/Modal';
 import Fab from '@mui/material/Fab';
-import { XLg } from 'react-bootstrap-icons'
+import { XLg, Image } from 'react-bootstrap-icons'
 import CloseIcon from '@mui/icons-material/Close'
+import ViewImage from './ViewImageComponent';
 import GridViewIcon from '@mui/icons-material/GridView';
 import ListIcon from '@mui/icons-material/List'
 import { listTodoLists, todosByDate, listCategories } from './graphql/queries';
@@ -33,17 +34,31 @@ export default function App() {
   const [showCompletionModal, setShowCompletionModal] = useState(false);
   const [showRedoModal, setShowRedoModal] = useState(false);
   const [clickedTodo, setClickedTodo] = useState({})
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [isSignedIn, setSignedIn] = useState(false);
 
+  useEffect(() => {
+    try{
+      fetchTodoLists();
+      fetchCategories();
+      fetchTodos();
+    }
+    catch(e) {
+      // console.log(e)
+    }
 
-    useEffect(() => {
-    fetchTodoLists();
-    fetchCategories();
-    fetchTodos();
-  }, []);
+  }, [isSignedIn]);
 
 
   const handleCloseCompletionModal = () => setShowCompletionModal(false);
   const handleCloseRedoModal = () => setShowRedoModal(false);
+  const handleCloseImageModal = () => setShowImageModal(false);
+
+  function handleShowImageModal(todo){
+    setClickedTodo(todo);
+    console.log(todo)
+    setShowImageModal(true);
+  }
 
   function handleShowCompletionModal(todo){
     setClickedTodo(todo);
@@ -65,13 +80,13 @@ export default function App() {
     fetchTodos()
   }
 
-  // Hub.listen('auth', (data) => {
-  //   switch (data.payload.event) {
-  //     case 'signIn':
-  //         fetchTodoLists()
-  //         break;
-  //   }
-  // });
+  Hub.listen('auth', (data) => {
+    switch (data.payload.event) {
+      case 'signIn':
+          setSignedIn(true);
+          break;
+    }
+  });
   
   function toggleCategoryView(){
     setCategoryView(!categoryView)
@@ -181,22 +196,32 @@ export default function App() {
               <h2>Completed</h2>
 
             }
-            { !categoryView && 
-                
-                todos.filter(todo => todo.completed === true).map(todo => (
-                    <div className={"todo-column-item"} id={todo.id} key={todo.id}>
-                      
-                    <Form.Check  key={todo.id} id={todo.description} type={"checkbox"} label={todo.description} defaultChecked={true} className={"checkbox"} onClick={() => handleShowRedoModal(todo)}></Form.Check>
-                    { todo.picture && 
-                      <img alt={todo.description} src={todo.picture}/>
-                    }
-                    <div className={'close-icon'}>
-                      <CloseIcon onClick={() => deleteTodo(todo)} />
-                    </div>
-                  </div>
-                ))
-              }
+            <div className={"todo-column"}>
 
+              { !categoryView && 
+                  
+                  todos.filter(todo => todo.completed === true).map(todo => (
+                      <div className={"todo-column-item"} id={todo.id} key={todo.id}>
+                        
+                      <Form.Check  key={todo.id} id={todo.description} type={"checkbox"} label={todo.description} defaultChecked={true} className={"checkbox"} onClick={() => handleShowRedoModal(todo)}></Form.Check>
+                      { todo.picture && 
+                        <div>
+                          <Image className={'image-icon'} onClick={() => handleShowImageModal(todo)} />
+                        </div>
+                      }
+                      {/* <div className={'close-icon'}>
+                        <CloseIcon onClick={() => deleteTodo(todo)} />
+                      </div> */}
+                    </div>
+                  ))
+                }
+            </div>
+            <Modal centered show={showImageModal} onHide={handleCloseImageModal}>
+              <ViewImage imgSrc={clickedTodo.picture} />
+            </Modal>
+            
+
+{/* 
                 <Fab className="view-toggle-fab" onClick={toggleCategoryView} color="primary" aria-label="add">
                   { !categoryView &&
                   <Zoom timeout={200} in={!categoryView}>
@@ -215,7 +240,7 @@ export default function App() {
                   
                   <AddCategory  />
                   
-                </div>
+                </div> */}
             
 
             {/* <AddTodoList /> removing this bc shouldn't be a need to create multiple lists */}
