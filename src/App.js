@@ -160,11 +160,11 @@ export default function App() {
       <Authenticator>
         {({ signOut, user }) => (
           <main>
-            <div className={'header-row'}>
+            <div key={'header-row-key'} className={'header-row'}>
               <h1>Todo</h1>
               <div className="img-row">
-                <img alt={'Mirs heart'} className={'heart-img-m'} src={"/assets/m_heart.png"}></img>
-                <img alt={'Wills heart'} className={'heart-img-w'} src={"/assets/w_heart.png"}></img>
+                <img key={'mir-row-key'} alt={'Mirs heart'} className={'heart-img-m'} src={"/assets/m_heart.png"}></img>
+                <img key={'will-row-key'} alt={'Wills heart'} className={'heart-img-w'} src={"/assets/w_heart.png"}></img>
               </div>
             </div>
             <div className={"todo-column"}>
