@@ -40,7 +40,7 @@ function RedoTodo({todoId, updateSuccessCallback, cancelCallback}) {
                     Cancel
                 </Button>
                 <Button variant="primary" onClick={handleUpdateTodo}>
-                    Complete
+                    Redo
                 </Button>
                 </Modal.Footer>
 
