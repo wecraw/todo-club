@@ -1,13 +1,12 @@
-import { Amplify, API, Storage, Auth, Hub } from 'aws-amplify';
+import { Amplify, API, Storage, Hub } from 'aws-amplify';
 import React, { useState, useEffect } from 'react';
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import awsExports from './aws-exports';
 import './App.css';
-import AddTodoList from './AddTodoListComponent';
 import AddCategory from './AddCategoryComponent';
-// import UpdateTodo from './UpdateTodoComponent';
 import CompleteTodo from './CompleteTodoComponent';
+import RedoTodo from './RedoTodoComponent';
 import AddTodo from './AddTodoComponent';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -18,8 +17,8 @@ import { XLg } from 'react-bootstrap-icons'
 import CloseIcon from '@mui/icons-material/Close'
 import GridViewIcon from '@mui/icons-material/GridView';
 import ListIcon from '@mui/icons-material/List'
-import { listTodoLists, listTodos, todosByDate, listCategories } from './graphql/queries';
-import { updateTodo as updateTodoMutation, deleteCategory as deleteCategoryMutation, deleteTodo as deleteTodoMutation, deleteTodoList as deleteTodoListMutation } from './graphql/mutations';
+import { listTodoLists, todosByDate, listCategories } from './graphql/queries';
+import { deleteCategory as deleteCategoryMutation, deleteTodo as deleteTodoMutation, deleteTodoList as deleteTodoListMutation } from './graphql/mutations';
 import Zoom from '@mui/material/Zoom';
 
 Amplify.configure(awsExports);
@@ -32,6 +31,7 @@ export default function App() {
   const [categoryView, setCategoryView] = useState(false)
   const [todos, setTodos] = useState([])
   const [showCompletionModal, setShowCompletionModal] = useState(false);
+  const [showRedoModal, setShowRedoModal] = useState(false);
   const [clickedTodo, setClickedTodo] = useState({})
 
 
@@ -43,45 +43,40 @@ export default function App() {
 
 
   const handleCloseCompletionModal = () => setShowCompletionModal(false);
-  // const handleShowCompletionModal = () => setShowCompletionModal(true);
+  const handleCloseRedoModal = () => setShowRedoModal(false);
 
   function handleShowCompletionModal(todo){
-    console.log(todo)
     setClickedTodo(todo);
     setShowCompletionModal(true);
   }
 
+  function handleShowRedoModal(todo){
+    setClickedTodo(todo);
+    setShowRedoModal(true);
+  }
+
+  const handleUpdateAndCloseRedoModal = () => {
+    setShowRedoModal(false)
+    fetchTodos()
+  }
+  
   const handleUpdateAndCloseCompletionModal = () => {
     setShowCompletionModal(false)
     fetchTodos()
   }
 
-  const handleCancelCompletionModal = () => {
-    setShowCompletionModal(false)
-  }
-
-
-  Hub.listen('auth', (data) => {
-    switch (data.payload.event) {
-      case 'signIn':
-          fetchTodoLists()
-          break;
-    }
-  });
+  // Hub.listen('auth', (data) => {
+  //   switch (data.payload.event) {
+  //     case 'signIn':
+  //         fetchTodoLists()
+  //         break;
+  //   }
+  // });
   
   function toggleCategoryView(){
     setCategoryView(!categoryView)
   }
 
-  async function onFileUpload(e) {
-    // if (!e.target.files[0]) return
-    // const file = e.target.files[0];
-    // setFormData({ ...formData, image: file.name });
-    // await Storage.put(file.name, file);
-    // fetchTodos();
-
-    console.log("ay")
-  }
 
   ////////////////////////////////////////////CRUD////////////////////////////////////////////////////
   
@@ -147,16 +142,16 @@ export default function App() {
 
 
       <Container >
-        <div className={'header-row'}>
-          <h1>Todo</h1>
-          <div className="img-row">
-            <img className={'heart-img-m'} src={"/assets/m_heart.png"}></img>
-            <img className={'heart-img-w'} src={"/assets/w_heart.png"}></img>
-          </div>
-        </div>
       <Authenticator>
         {({ signOut, user }) => (
           <main>
+            <div className={'header-row'}>
+              <h1>Todo</h1>
+              <div className="img-row">
+                <img alt={'Mirs heart'} className={'heart-img-m'} src={"/assets/m_heart.png"}></img>
+                <img alt={'Wills heart'} className={'heart-img-w'} src={"/assets/w_heart.png"}></img>
+              </div>
+            </div>
             <div className={"todo-column"}>
 
               { !categoryView &&
@@ -165,15 +160,17 @@ export default function App() {
                     <div className={"todo-column-item"} id={todo.id} key={todo.id}>
                       
                     <Form.Check  key={todo.id} id={todo.description} type={"checkbox"} label={todo.description} className={"checkbox"} onClick={() => handleShowCompletionModal(todo)}></Form.Check>
-                    {/* <div className={"todo-label"}>{todo.description}</div> */}
                     <div className={'close-icon'}>
                       <CloseIcon onClick={() => deleteTodo(todo)} />
                     </div>
                   </div>
                 ))
               }
-                <Modal show={showCompletionModal} onHide={handleCloseCompletionModal}>
-                      <CompleteTodo todoName={clickedTodo.description} setCompleted={!clickedTodo.completed} todoId={clickedTodo.id} cancelCallback={handleCancelCompletionModal} updateSuccessCallback={handleUpdateAndCloseCompletionModal} />
+                <Modal centered show={showCompletionModal} onHide={handleCloseCompletionModal}>
+                      <CompleteTodo todoId={clickedTodo.id} cancelCallback={handleCloseCompletionModal} updateSuccessCallback={handleUpdateAndCloseCompletionModal} />
+                </Modal>
+                <Modal centered show={showRedoModal} onHide={handleCloseRedoModal}>
+                      <RedoTodo todoId={clickedTodo.id} cancelCallback={handleCloseRedoModal} updateSuccessCallback={handleUpdateAndCloseRedoModal} />
                 </Modal>
             </div>
             { !categoryView && 
@@ -189,11 +186,10 @@ export default function App() {
                 todos.filter(todo => todo.completed === true).map(todo => (
                     <div className={"todo-column-item"} id={todo.id} key={todo.id}>
                       
-                    <Form.Check  key={todo.id} id={todo.description} type={"checkbox"} label={todo.description} checked={true} className={"checkbox"} onClick={() => handleShowCompletionModal(todo)}></Form.Check>
+                    <Form.Check  key={todo.id} id={todo.description} type={"checkbox"} label={todo.description} defaultChecked={true} className={"checkbox"} onClick={() => handleShowRedoModal(todo)}></Form.Check>
                     { todo.picture && 
-                      <img src={todo.picture}/>
+                      <img alt={todo.description} src={todo.picture}/>
                     }
-                    {/* <div className={"todo-label"}>{todo.description}</div> */}
                     <div className={'close-icon'}>
                       <CloseIcon onClick={() => deleteTodo(todo)} />
                     </div>

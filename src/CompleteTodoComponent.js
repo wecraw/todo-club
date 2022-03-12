@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { updateTodo as updateTodoMutation } from './graphql/mutations';
 import { Amplify, API, Storage } from 'aws-amplify';
 import Modal from 'react-bootstrap/Modal';
@@ -6,21 +6,13 @@ import awsExports from './aws-exports';
 import Button from 'react-bootstrap/Button';
 import { MDBFile } from 'mdb-react-ui-kit';
 const initialFormState = { image: '' }
-const TODO_LIST_ID = "91334d86-fbd0-434d-a81e-cf0da28ee262" //this is the ID for the singular todoList used between me and Miriam
-                                                            //this would obviously not work in a scaled app
+
 Amplify.configure(awsExports);
 
 
-function CompleteTodo({todoId, todoName, setCompleted, updateSuccessCallback, cancelCallback}) {
-
-        const [disabled, setDisabled] = useState(true);
+function CompleteTodo({todoId, updateSuccessCallback, cancelCallback}) {
 
         const [formData, setFormData] = useState(initialFormState);
-        
-        function updateForm(value){
-          setButtonDisabled(value);
-          setFormData({ ...formData, 'image': value});
-        }
 
         function handleUpdateTodo(){
             updateTodo()
@@ -31,26 +23,24 @@ function CompleteTodo({todoId, todoName, setCompleted, updateSuccessCallback, ca
         }
 
         async function updateTodo(){
-            if (!formData.image) return;
-
-            let newTodoData = {
-              picture: formData.image,
-              id: todoId,
-              completed: setCompleted
-            }          
-  
+          let newTodoData;
+            if (!formData.image){
+              newTodoData = {
+                picture: formData.image,
+                id: todoId,
+                completed: true
+              }      
+            } else {
+              newTodoData = {
+                picture: formData.image,
+                id: todoId,
+                completed: true
+              }      
+            }
             await API.graphql({ query: updateTodoMutation, variables: { input: newTodoData }, authMode: 'AMAZON_COGNITO_USER_POOLS' });
             setFormData(initialFormState);
             updateSuccessCallback() //ostensibly close the modal, update todos
 
-        }
-
-        function setButtonDisabled(e){
-          if (e === ""){
-            setDisabled(true);
-          } else {
-            setDisabled(false);
-          }
         }
 
         async function onChange(e) {
@@ -58,18 +48,10 @@ function CompleteTodo({todoId, todoName, setCompleted, updateSuccessCallback, ca
           const file = e.target.files[0];
           setFormData({ ...formData, image: file.name });
           await Storage.put(file.name, file);
-          updateTodo()
         }
 
-        function test(){
-          console.log("hey")
-        }
-    
         return (
-            <div>
-
-
-
+          <div>
             <Modal.Header closeButton>
             <Modal.Title>We did it!</Modal.Title>
             </Modal.Header>
