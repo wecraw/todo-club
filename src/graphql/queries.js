@@ -170,7 +170,6 @@ export const todosByDate = /* GraphQL */ `
   query TodosByDate(
     $createdAt: ModelStringKeyConditionInput
     $filter: ModelTodoFilterInput
-    $limit: Int
     $nextToken: String
   ) {
     todosByDate(
@@ -178,7 +177,7 @@ export const todosByDate = /* GraphQL */ `
       createdAt: $createdAt
       sortDirection: ASC
       filter: $filter
-      limit: $limit
+      limit: 10000
       nextToken: $nextToken
     ) {
       items {

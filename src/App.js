@@ -116,6 +116,7 @@ export default function App() {
       return todo;
     }))
     setTodos(apiData.data.todosByDate.items);
+    console.log(todos)
   }
 
   async function fetchCategories() {
